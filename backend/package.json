@@ -2,7 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "develop": "php artisan serve",
+        "develop": "docker compose up --build",
         "migrate": "php artisan migrate:fresh --seed"
     },
     "devDependencies": {

@@ -6,10 +6,12 @@ use Laravel\Sanctum\HasApiTokens;
 use MongoDB\Laravel\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 class User extends Model implements Authenticatable, JWTSubject
 {
+    use HasFactory;
     use AuthenticableTrait;
 
     /**
