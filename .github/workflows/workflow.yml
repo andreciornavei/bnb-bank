@@ -14,38 +14,38 @@ jobs:
       # This step checks out a copy of your repository.
       - name: Checkout code
         uses: actions/checkout@v3
-        if: success()
 
       # This step sets up Node.js environment.
       - name: Setup Node.js
-        uses: actions/setup-node@v3
         working-directory: ${{ github.workspace }}/backend
+        uses: actions/setup-node@v3
         if: success()
 
       # This step installs the Serverless Framework globally.
       - name: Install Serverless Framework
-        run: npm install -g serverless serverless-prune-plugin serverless-iam-roles-per-function
         working-directory: ${{ github.workspace }}/backend
+        run: npm install -g serverless serverless-prune-plugin serverless-iam-roles-per-function
         if: success()
 
       # This step sets up PHP environment with the specified version.
       - name: Setup PHP
+        working-directory: ${{ github.workspace }}/backend
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.2"
-        working-directory: ${{ github.workspace }}/backend
         if: success()
 
       # This step installs Composer dependencies with the specified options.
       - name: Install Composer dependencies
+        working-directory: ${{ github.workspace }}/backend
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: "--prefer-dist --optimize-autoloader --no-dev"
-        working-directory: ${{ github.workspace }}/backend
         if: success()
 
       # This step deploys your application to AWS Lambda using the Serverless Framework.
       - name: Deploy to AWS Lambda
+        working-directory: ${{ github.workspace }}/backend
         uses: serverless/github-action@v3
         with:
           args: deploy --stage ${GITHUB_REF#refs/heads/} --region ${{ secrets.AWS_DEFAULT_REGION }} --verbose
@@ -56,5 +56,4 @@ jobs:
           AWS_HOSTED_ZONE_ID: ${{ vars.AWS_HOSTED_ZONE_ID }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        working-directory: ${{ github.workspace }}/backend
         if: success()
