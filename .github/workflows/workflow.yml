@@ -1,7 +1,7 @@
 name: BnbBankCI
 
 on:
-  pull_request:
+  push:
     branches:
       - staging
       - production
