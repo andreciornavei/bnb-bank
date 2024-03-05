@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthRegisterController;
 use App\Http\Controllers\AuthUserDataController;
 use App\Http\Controllers\TransactionCreateController;
 use App\Http\Controllers\TransactionFindForUserController;
+use App\Http\Controllers\TransactionUploadCheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +28,5 @@ Route::get('auth/me', [AuthUserDataController::class, 'handler'])->middleware(Au
 Route::group(['middleware' => 'api'], function () {
     Route::post('transactions', [TransactionCreateController::class, 'handler']);
     Route::get('transactions', [TransactionFindForUserController::class, 'handler']);
+    Route::post('transactions/upload', [TransactionUploadCheckController::class, 'handler']);
 });

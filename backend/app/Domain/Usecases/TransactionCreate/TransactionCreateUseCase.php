@@ -6,6 +6,7 @@ use App\Exceptions\JsonException;
 use Illuminate\Support\Facades\Validator;
 
 use App\Domain\Entities\TransactionEntity;
+use App\Domain\Providers\IStorageProvider;
 use App\Domain\Usecases\TransactionCreate\TransactionCreateDto;
 use App\Domain\Repositories\ICreateTransactionRepository\ICreateTransactionDto;
 use App\Domain\Repositories\ICreateTransactionRepository\ICreateTransactionRepository;
@@ -13,8 +14,10 @@ use App\Domain\Repositories\ICreateTransactionRepository\ICreateTransactionRepos
 
 class TransactionCreateUseCase
 {
-    public function __construct(private readonly ICreateTransactionRepository $createTransactionRepository)
-    {
+    public function __construct(
+        private readonly IStorageProvider $storageProvider,
+        private readonly ICreateTransactionRepository $createTransactionRepository
+    ) {
     }
 
     public function handler(TransactionCreateDto $dto): TransactionEntity
@@ -25,12 +28,12 @@ class TransactionCreateUseCase
             'description' => $dto->getDescription(),
             'document' => $dto->getDocument(),
             'amount' => $dto->getAmount(),
+            'user_id' => $dto->getUserId(),
         ];
 
         // create validate schema
         $validator = Validator::make(
             array_merge($payload, [
-                'user_id' => $dto->getUserId(),
                 'balance' => $dto->getUserBalance()
             ]),
             [
@@ -62,9 +65,62 @@ class TransactionCreateUseCase
             ]);
         }
 
-        // create a new transaction and return it
+        // check if was provided a document, then try to retrieve it from storage
+        if ($dto->getDocument()) {
+
+            // split document name to get the user_id from document key
+            $documentUserId = explode("_", $dto->getDocument())[0];
+            if ($documentUserId != $dto->getUserId()) {
+                throw new JsonException([
+                    "error" => [
+                        "message" => "Failed to access document",
+                        "fields" => [
+                            "document" => "The provided document does not belongs to your user."
+                        ]
+                    ]
+                ]);
+            }
+
+            // check if provided document exists on provider
+            $file = $this->storageProvider->checkTmpDocument($dto->getDocument());
+
+            // throw error message if document wasnot uploaded
+            if (!$file) {
+                throw new JsonException([
+                    "error" => [
+                        "message" => "Failed to find document",
+                        "fields" => [
+                            "document" => "The provided document was not founded."
+                        ]
+                    ]
+                ]);
+            }
+
+            // Move document to deposits folder
+            $moved = $this->storageProvider->moveDocument(
+                "tmp/" . $dto->getDocument(),
+                "deposits/" . $dto->getDocument()
+            );
+
+            // If not moved, throw an error to avoid to create transaction
+            if (!$moved) {
+                throw new JsonException([
+                    "error" => [
+                        "message" => "Failed to create document",
+                        "fields" => [
+                            "document" => "Was not possible to store document with transaction."
+                        ]
+                    ]
+                ]);
+            }
+        }
+
+        // create a new transaction 
         return $this->createTransactionRepository->handler(new ICreateTransactionDto(
-            array_merge($payload, ["status" => "pending"])
+            array_merge($payload, [
+                // if is a deposit, starts with "pending" else it is approved
+                "status" => $dto->getFactor() == 1 ? "pending" : "approved"
+            ])
         ));
     }
 }

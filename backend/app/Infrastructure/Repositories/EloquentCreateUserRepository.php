@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Infrastructure\Repositories;
 
 use App\Models\UserModel;
 use App\Domain\Entities\UserEntity;
 use App\Domain\Repositories\ICreateUserRepository\ICreateUserDto;
 use App\Domain\Repositories\ICreateUserRepository\ICreateUserRepository;
-
 
 class EloquentCreateUserRepository implements ICreateUserRepository
 {
