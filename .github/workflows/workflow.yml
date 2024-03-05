@@ -17,7 +17,7 @@ jobs:
 
       # Place directory on backend project codebase
       - name: Select backend directory
-        run: cd ../../backend
+        run: cd backend
 
       # This step sets up Node.js environment.
       - name: Setup Node.js
