@@ -1,9 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TransactionController;
+use App\Http\Middleware\Authenticate;
+use App\Http\Controllers\AuthLoginController;
+use App\Http\Controllers\AuthRegisterController;
+use App\Http\Controllers\AuthUserDataController;
+use App\Http\Controllers\TransactionCreateController;
+use App\Http\Controllers\TransactionFindForUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,19 +19,12 @@ use App\Http\Controllers\TransactionController;
 |
 */
 
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-], function ($router) {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('register', [AuthController::class, 'register']);
-    Route::get('me', [AuthController::class, 'me']);
-});
+Route::post('auth/login', [AuthLoginController::class, 'handler']);
+Route::post('auth/register', [AuthRegisterController::class, 'handler']);
+Route::get('auth/me', [AuthUserDataController::class, 'handler'])->middleware(Authenticate::class);
 
-Route::group(['middleware' => 'api'], function ($router) {
-    Route::get('transactions', [TransactionController::class, 'index']);
-    Route::get('transactions/{id}', [TransactionController::class, 'show']);
-    Route::post('transactions', [TransactionController::class, 'store']);
-    Route::post('transactions/document', [TransactionController::class, 'upload']);
-});
 
+Route::group(['middleware' => 'api'], function () {
+    Route::post('transactions', [TransactionCreateController::class, 'handler']);
+    Route::get('transactions', [TransactionFindForUserController::class, 'handler']);
+});

@@ -5,11 +5,13 @@ namespace App\Models;
 use MongoDB\Laravel\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Transaction extends Model
+class TransactionModel extends Model
 {
     use HasFactory;
 
-     /**
+    protected $table = 'transactions';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -22,5 +24,4 @@ class Transaction extends Model
         'document',
         'status',
     ];
-
 }

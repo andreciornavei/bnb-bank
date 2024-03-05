@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use Laravel\Sanctum\HasApiTokens;
 use MongoDB\Laravel\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
-class User extends Model implements Authenticatable, JWTSubject
+class UserModel extends Model implements Authenticatable, JWTSubject
 {
     use HasFactory;
     use AuthenticableTrait;
+
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -45,15 +46,14 @@ class User extends Model implements Authenticatable, JWTSubject
         'password' => 'hashed',
     ];
 
-     // JWTSubject methods
-     public function getJWTIdentifier()
-     {
-         return $this->getKey();
-     }
- 
-     public function getJWTCustomClaims()
-     {
-         return [];
-     }
+    // JWTSubject methods
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }
