@@ -43,7 +43,7 @@ jobs:
       - name: Deploy to AWS Lambda
         uses: serverless/github-action@v3
         with:
-          args: deploy --stage  ${GITHUB_REF#refs/heads/} --region ${AWS_DEFAULT_REGION} --verbose
+          args: deploy --stage ${GITHUB_REF#refs/heads/} --region ${{ secrets.AWS_DEFAULT_REGION }} --verbose
         env:
           DOMAIN: ${{ vars.DOMAIN }}
           DB_URI: ${{ secrets.DB_URI }}
