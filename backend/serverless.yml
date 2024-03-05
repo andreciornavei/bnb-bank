@@ -60,7 +60,6 @@ functions:
       APP_ENV: ${sls:stage}
       APP_NAME: ${param:UID}
       DB_URI: ${param:DB_URI}
-      AWS_DEFAULT_REGION: ${param:REGION}
       AWS_BUCKET: ${param:BUCKET_NAME}
       AWS_USE_PATH_STYLE_ENDPOINT: false
       JWT_SECRET: ${param:JWT_SECRET}
