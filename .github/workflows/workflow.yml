@@ -45,6 +45,8 @@ jobs:
       - name: Deploy to AWS Lambda
         run: |
           cd backend
+          echo "APP_NAME=${{ vars.SUBDOMAIN }}" >> .env
+          echo "SUBDOMAIN=${{ vars.SUBDOMAIN }}" >> .env
           echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
           echo "DB_URI=${{ secrets.DB_URI }}" >> .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
