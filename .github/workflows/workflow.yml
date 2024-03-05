@@ -19,43 +19,47 @@ jobs:
         id: branch-names
         uses: tj-actions/branch-names@v8
 
-      # This step sets up Node.js environment.
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        if: success()
-
-      # This step installs the Serverless Framework globally.
-      - name: Install Serverless Framework
+      - name: print stage env
         run: |
-          cd backend
-          npm install -g serverless serverless-prune-plugin serverless-iam-roles-per-function
-        if: success()
+          echo "STAGE=${{ steps.branch-names.outputs.current_branch }}""
 
-      # This step sets up PHP environment with the specified version.
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-        if: success()
+      # # This step sets up Node.js environment.
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v3
+      #   if: success()
 
-      # This step installs Composer dependencies with the specified options.
-      - name: Install Composer dependencies
-        run: |
-          cd backend
-          composer install --prefer-dist --optimize-autoloader --no-dev
-        if: success()
+      # # This step installs the Serverless Framework globally.
+      # - name: Install Serverless Framework
+      #   run: |
+      #     cd backend
+      #     npm install -g serverless serverless-prune-plugin serverless-iam-roles-per-function
+      #   if: success()
 
-      # This step deploys your application to AWS Lambda using the Serverless Framework.
-      - name: Deploy to AWS Lambda
-        run: |
-          cd backend
-          echo "APP_NAME=${{ vars.SUBDOMAIN }}" >> .env
-          echo "SUBDOMAIN=${{ vars.SUBDOMAIN }}" >> .env
-          echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
-          echo "DB_URI=${{ secrets.DB_URI }}" >> .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-          echo "AWS_HOSTED_ZONE_ID=${{ vars.AWS_HOSTED_ZONE_ID }}" >> .env
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
-          serverless deploy --config serverless.yml --stage ${{ steps.branch-names.outputs.current_branch }} --region ${{ vars.AWS_DEFAULT_REGION }} --verbose
-        if: success()
+      # # This step sets up PHP environment with the specified version.
+      # - name: Setup PHP
+      #   uses: shivammathur/setup-php@v2
+      #   with:
+      #     php-version: "8.2"
+      #   if: success()
+
+      # # This step installs Composer dependencies with the specified options.
+      # - name: Install Composer dependencies
+      #   run: |
+      #     cd backend
+      #     composer install --prefer-dist --optimize-autoloader --no-dev
+      #   if: success()
+
+      # # This step deploys your application to AWS Lambda using the Serverless Framework.
+      # - name: Deploy to AWS Lambda
+      #   run: |
+      #     cd backend
+      #     echo "APP_NAME=${{ vars.SUBDOMAIN }}" >> .env
+      #     echo "SUBDOMAIN=${{ vars.SUBDOMAIN }}" >> .env
+      #     echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
+      #     echo "DB_URI=${{ secrets.DB_URI }}" >> .env
+      #     echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+      #     echo "AWS_HOSTED_ZONE_ID=${{ vars.AWS_HOSTED_ZONE_ID }}" >> .env
+      #     echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+      #     echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+      #     serverless deploy --config serverless.yml --stage ${{ steps.branch-names.outputs.current_branch }} --region ${{ vars.AWS_DEFAULT_REGION }} --verbose
+      #   if: success()
