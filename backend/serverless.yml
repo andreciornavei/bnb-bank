@@ -21,6 +21,7 @@ params:
     DOMAIN: ${env:DOMAIN}
     REGION: ${opt:region, 'us-east-1'}
     DB_URI: ${env:DB_URI}
+    APP_KEY: ${env:APP_KEY}
     JWT_SECRET: ${env:JWT_SECRET}
     AWS_HOSTED_ZONE_ID: ${env:AWS_HOSTED_ZONE_ID}
     SUBDOMAIN: ${env:SUBDOMAIN}.${sls:stage}.${env:DOMAIN}
@@ -58,7 +59,8 @@ functions:
     description: Function to handle function as a monolitic api server.
     environment:
       APP_ENV: ${sls:stage}
-      APP_NAME: ${param:UID}
+      APP_KEY: ${param:APP_KEY}
+      APP_NAME: ${param:APP_NAME}
       DB_URI: ${param:DB_URI}
       AWS_BUCKET: ${param:BUCKET_NAME}
       AWS_USE_PATH_STYLE_ENDPOINT: false
