@@ -19,7 +19,6 @@ params:
   default:
     UID: bnb-bank-api-${sls:stage}
     REGION: ${opt:region, 'us-east-1'}
-    APP_VERSION: ${env:APP_VERSION}
     DB_URI: ${env:DB_URI}
     JWT_SECRET: ${env:JWT_SECRET}
     S3_DOMAIN: https://s3.${opt:region}.amazonaws.com
