@@ -8,6 +8,15 @@ Still, AWS infrastructure is being used to release the project and all its resou
 
 MongoDB is being used for database.
 
+### Environment
+
+The application is packaged on Docker to be deployed on AWS, also it is using the Bref image to respond requests thought lambda functions.
+
+https://bref.sh/docs/laravel/getting-started
+https://bref.sh/docs/deploy/docker
+
+**- `CACHE_DRIVER` was disabled to work on lambda.**
+
 ### Account Access
 
 Below you can find all accounts needed to see ONLY the resources for the entire infrastructure with READ permission. 
