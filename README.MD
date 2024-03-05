@@ -16,21 +16,3 @@ https://bref.sh/docs/laravel/getting-started
 https://bref.sh/docs/deploy/docker
 
 **- `CACHE_DRIVER` was disabled to work on lambda.**
-
-### Account Access
-
-Below you can find all accounts needed to see ONLY the resources for the entire infrastructure with READ permission. 
-
-```bash
-# Amazon Web Services
-url:
-username:
-password:
-```
-
-```bash
-# MongoDB
-url:
-username:
-password:
-```
