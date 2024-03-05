@@ -15,22 +15,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Place directory on backend project codebase
-      - name: Select backend directory
-        run: cd backend
-
       # This step sets up Node.js environment.
       - name: Setup Node.js
+        working-directory: backend
         uses: actions/setup-node@v3
         if: success()
 
       # This step installs the Serverless Framework globally.
       - name: Install Serverless Framework
+        working-directory: backend
         run: npm install -g serverless serverless-prune-plugin serverless-iam-roles-per-function
         if: success()
 
       # This step sets up PHP environment with the specified version.
       - name: Setup PHP
+        working-directory: backend
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.2"
@@ -38,6 +37,7 @@ jobs:
 
       # This step installs Composer dependencies with the specified options.
       - name: Install Composer dependencies
+        working-directory: backend
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: "--prefer-dist --optimize-autoloader --no-dev"
@@ -45,6 +45,7 @@ jobs:
 
       # This step deploys your application to AWS Lambda using the Serverless Framework.
       - name: Deploy to AWS Lambda
+        working-directory: backend
         uses: serverless/github-action@v3
         with:
           args: deploy --stage ${GITHUB_REF#refs/heads/} --region ${{ secrets.AWS_DEFAULT_REGION }} --verbose
