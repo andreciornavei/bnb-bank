@@ -60,7 +60,6 @@ functions:
     environment:
       APP_ENV: ${sls:stage}
       APP_NAME: ${param:UID}
-      APP_VERSION: ${param:APP_VERSION}
       DB_URI: ${param:DB_URI}
       AWS_DEFAULT_REGION: ${param:REGION}
       AWS_BUCKET: ${param:BUCKET_NAME}
