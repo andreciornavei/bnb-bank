@@ -17,35 +17,34 @@ jobs:
 
       # This step sets up Node.js environment.
       - name: Setup Node.js
-        working-directory: backend
         uses: actions/setup-node@v3
         if: success()
+        working-directory: backend
 
       # This step installs the Serverless Framework globally.
       - name: Install Serverless Framework
-        working-directory: backend
         run: npm install -g serverless serverless-prune-plugin serverless-iam-roles-per-function
         if: success()
+        working-directory: backend
 
       # This step sets up PHP environment with the specified version.
       - name: Setup PHP
-        working-directory: backend
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.2"
         if: success()
+        working-directory: backend
 
       # This step installs Composer dependencies with the specified options.
       - name: Install Composer dependencies
-        working-directory: backend
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: "--prefer-dist --optimize-autoloader --no-dev"
         if: success()
+        working-directory: backend
 
       # This step deploys your application to AWS Lambda using the Serverless Framework.
       - name: Deploy to AWS Lambda
-        working-directory: backend
         uses: serverless/github-action@v3
         with:
           args: deploy --stage ${GITHUB_REF#refs/heads/} --region ${{ secrets.AWS_DEFAULT_REGION }} --verbose
@@ -57,3 +56,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         if: success()
+        working-directory: backend
