@@ -22,6 +22,7 @@ params:
     REGION: ${opt:region, 'us-east-1'}
     DB_URI: ${env:DB_URI}
     APP_KEY: ${env:APP_KEY}
+    APP_NAME: ${env:APP_NAME}
     JWT_SECRET: ${env:JWT_SECRET}
     AWS_HOSTED_ZONE_ID: ${env:AWS_HOSTED_ZONE_ID}
     SUBDOMAIN: ${env:SUBDOMAIN}.${sls:stage}.${env:DOMAIN}
