@@ -21,7 +21,7 @@ jobs:
 
       - name: print stage env
         run: |
-          echo "STAGE=${{ steps.branch-names.outputs.current_branch }}""
+          echo "STAGE=${{ steps.branch-names.outputs.current_branch }}"
 
       # # This step sets up Node.js environment.
       # - name: Setup Node.js
