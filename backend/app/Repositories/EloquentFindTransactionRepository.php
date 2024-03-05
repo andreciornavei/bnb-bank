@@ -18,19 +18,17 @@ class EloquentFindTransactionRepository implements IFindTransactionRepository
      */
     public function handler(IFindTransactionDto $dto): array
     {
+        // initialize query
         $query = TransactionModel::orderBy('_id', 'DESC');
+
+        // add optional filters
         if ($dto->getLimit()) $query->limit($dto->getLimit());
         if ($dto->getCursor()) $query->where('_id', '<', $dto->getCursor());
         if ($dto->getFilterId()) $query->where("_id", "=", $dto->getFilterId());
         if ($dto->getFilterUserId()) $query->where("user_id", "=", $dto->getFilterUserId());
         if ($dto->getFilterStatus()) $query->whereIn("status", $dto->getFilterStatus());
 
-        $results = [];
-        foreach ($query->get() as $record) {
-            $transaction = new TransactionEntity($record->toArray());
-            $results[] = $transaction->toJson();
-        }
-
-        return $results;
+        // return result
+        return $query->get()->map(fn ($record) => (new TransactionEntity($record->toArray()))->toJson())->all();
     }
 }
