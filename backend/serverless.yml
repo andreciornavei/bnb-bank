@@ -1,0 +1,151 @@
+frameworkVersion: "^3.33.0"
+
+service: bnb-bank-api
+useDotenv: true
+
+plugins:
+  - ./vendor/bref/bref
+  - serverless-prune-plugin
+  - serverless-iam-roles-per-function
+
+custom:
+  prune:
+    automatic: true
+    number: 3
+  serverless-iam-roles-per-function:
+    defaultInherit: true
+
+params:
+  default:
+    UID: bnb-bank-api-${sls:stage}
+    REGION: ${opt:region, 'us-east-1'}
+    APP_VERSION: ${env:APP_VERSION}
+    DB_URI: ${env:DB_URI}
+    JWT_SECRET: ${env:JWT_SECRET}
+    S3_DOMAIN: https://s3.${opt:region}.amazonaws.com
+    API_DOMAIN: bnb-bank-api.${sls:stage}.${env:DOMAIN}
+    BUCKET_NAME: bnb-bank-upload.${sls:stage}.${env:DOMAIN}
+    AWS_HOSTED_ZONE_ID: ${env:AWS_HOSTED_ZONE_ID}
+  production:
+    API_DOMAIN: bnb-bank-api.${env:DOMAIN}
+    BUCKET_NAME: bnb-bank-upload.${env:DOMAIN}
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'development'}
+  region: ${opt:region, 'us-east-1'}
+  ecr:
+    images:
+      bnb-bank-api:
+        path: ./
+        file: Dockerfile
+
+functions:
+  api:
+    iamRoleStatementsName: ${param:UID}-api-assume-roles
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+          - s3:ListBucket
+          - s3:DeleteObject
+          - s3:PutObjectAcl
+        Resource: arn:aws:s3:::${param:BUCKET_NAME}/*
+    image:
+      name: bnb-bank-api
+    timeout: 28
+    name: fn-${param:UID}
+    description: Function to handle function as a monolitic api server.
+    environment:
+      APP_ENV: ${sls:stage}
+      APP_NAME: ${param:UID}
+      APP_VERSION: ${param:APP_VERSION}
+      DB_URI: ${param:DB_URI}
+      AWS_DEFAULT_REGION: ${param:REGION}
+      AWS_BUCKET: ${param:BUCKET_NAME}
+      AWS_USE_PATH_STYLE_ENDPOINT: false
+      JWT_SECRET: ${param:JWT_SECRET}
+    events:
+      - httpApi: "*"
+
+resources:
+  Resources:
+    ## ********************************************************* ##
+    ## ** CONFIG BUCKET TO STORE APP RESOURCES LIKE (CHECKS)  ** ##
+    ## ********************************************************* ##
+    UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${param:BUCKET_NAME}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          IgnorePublicAcls: false
+          BlockPublicPolicy: false
+          RestrictPublicBuckets: false
+        OwnershipControls:
+          Rules:
+            - ObjectOwnership: ObjectWriter
+        LifecycleConfiguration:
+          Rules:
+            - Id: TempRetentionRule
+              Prefix: tmp
+              Status: Enabled
+              ExpirationInDays: 1
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - "*"
+              AllowedMethods:
+                - GET
+                - POST
+              AllowedHeaders:
+                - "*"
+    ## ********************************************************* ##
+    ## ** CONFIG CERT TO ENABLE HTTPS DOMAIN                  ** ##
+    ## ********************************************************* ##
+    CertificateDomainPrimary:
+      Type: AWS::CertificateManager::Certificate
+      Properties:
+        ValidationMethod: DNS
+        DomainName: ${param:API_DOMAIN}
+        DomainValidationOptions:
+          - DomainName: ${param:API_DOMAIN}
+            HostedZoneId: ${param:AWS_HOSTED_ZONE_ID}
+        Tags:
+          - Key: Name
+            Value: !Sub ${AWS::StackName}-cert-domain
+    ## ********************************************************* ##
+    ## ** CONFIG API GATEWAY TO RESPOND HTTP REQUESTS         ** ##
+    ## ********************************************************* ##
+    ApiGatewayDomainName:
+      Type: AWS::ApiGatewayV2::DomainName
+      DependsOn:
+        - HttpApi
+        - CertificateDomainPrimary
+      Properties:
+        DomainName: ${param:API_DOMAIN}
+        DomainNameConfigurations:
+          - EndpointType: REGIONAL
+            CertificateArn: !Ref CertificateDomainPrimary
+    ApiGatewayMapping:
+      Type: "AWS::ApiGatewayV2::ApiMapping"
+      DependsOn:
+        - HttpApi
+        - HttpApiStage
+        - ApiGatewayDomainName
+      Properties:
+        ApiId: !Ref HttpApi
+        Stage: !Ref HttpApiStage
+        DomainName: ${param:API_DOMAIN}
+    PrimaryRoute53Record:
+      Type: AWS::Route53::RecordSet
+      DependsOn:
+        - ApiGatewayDomainName
+      Properties:
+        Type: A
+        Name: ${param:API_DOMAIN}
+        HostedZoneId: ${param:AWS_HOSTED_ZONE_ID}
+        AliasTarget:
+          DNSName: !GetAtt ApiGatewayDomainName.RegionalDomainName
+          HostedZoneId: !GetAtt ApiGatewayDomainName.RegionalHostedZoneId
