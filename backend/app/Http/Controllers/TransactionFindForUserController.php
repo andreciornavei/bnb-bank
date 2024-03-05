@@ -6,9 +6,9 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\_Controller;
 
-use App\Repositories\EloquentFindTransactionRepository;
 use App\Domain\Usecases\TransactionFind\TransactionFindDto;
 use App\Domain\Usecases\TransactionFind\TransactionFindUseCase;
+use App\Infrastructure\Repositories\EloquentFindTransactionRepository;
 
 class TransactionFindForUserController extends _Controller
 {

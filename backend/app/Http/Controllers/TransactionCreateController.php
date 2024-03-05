@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\_Controller;
 use App\Domain\Usecases\TransactionCreate\TransactionCreateDto;
 use App\Domain\Usecases\TransactionCreate\TransactionCreateUseCase;
-use App\Repositories\EloquentCreateTransactionRepository;
+use App\Infrastructure\Providers\Storage\AwsS3Provider;
+use App\Infrastructure\Repositories\EloquentCreateTransactionRepository;
 
 class TransactionCreateController extends _Controller
 {
@@ -16,6 +17,7 @@ class TransactionCreateController extends _Controller
     {
         $this->middleware('auth:api');
         $this->transactionCreateUsecase = new TransactionCreateUseCase(
+            new AwsS3Provider(),
             new EloquentCreateTransactionRepository()
         );
     }

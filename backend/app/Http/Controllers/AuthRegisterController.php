@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\_Controller;
-use App\Repositories\EloquentCreateUserRepository;
 use App\Domain\Usecases\AuthRegister\AuthRegisterDto;
 use App\Domain\Usecases\AuthRegister\AuthRegisterUseCase;
+use App\Infrastructure\Repositories\EloquentCreateUserRepository;
 
 class AuthRegisterController extends _Controller
 {
