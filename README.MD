@@ -1,4 +1,4 @@
-## Turno, formerly TurnboverBnB - Test
+## Turno, formerly TurnboverBnB - BnbBank Test
 
 This is a test proposed by Turno to build a simplified Bank System using PHP/Laravel and ReactJS.
 
