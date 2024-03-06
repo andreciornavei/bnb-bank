@@ -13,7 +13,6 @@ class TransactionUploadCheckController extends _Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api');
         $this->transactionUploadCheckUsecase = new TransactionUploadCheckUseCase(
             new AwsS3Provider()
         );
