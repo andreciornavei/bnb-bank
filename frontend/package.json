@@ -2,7 +2,19 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "kill": "kill -9 $(lsof -ti:3000)",
+    "develop": "react-app-rewired start ENVFILE=.env",
+    "build": "react-app-rewired build",
+    "check-tsc": "tsc --noEmit",
+    "build:serve": "npx serve -s build"
+  },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/lab": "^5.0.0-alpha.167",
+    "@mui/material": "^5.15.12",
+    "@phosphor-icons/react": "^2.0.15",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -10,17 +22,24 @@
     "@types/node": "^16.18.86",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
+    "axios": "^1.6.7",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "notistack": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.0",
+    "react-router-dom": "^6.22.2",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
+    "use-context-selector": "^1.4.3",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "develop": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "@mui/types": "^7.2.13",
+    "@types/lodash": "^4.14.202",
+    "react-app-rewire-alias": "^1.1.7",
+    "react-app-rewired": "^2.2.1"
   },
   "eslintConfig": {
     "extends": [
