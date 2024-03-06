@@ -5,15 +5,15 @@ namespace App\Domain\Usecases\TransactionFind;
 use App\Exceptions\JsonException;
 use Illuminate\Support\Facades\Validator;
 
-use App\Domain\Entities\TransactionEntity;
 use App\Domain\Usecases\TransactionFind\TransactionFindDto;
 use App\Domain\Repositories\IFindTransactionRepository\IFindTransactionDto;
 use App\Domain\Repositories\IFindTransactionRepository\IFindTransactionRepository;
 
 class TransactionFindUseCase
 {
-    public function __construct(private readonly IFindTransactionRepository $findTransactionRepository)
-    {
+    public function __construct(
+        private readonly IFindTransactionRepository $findTransactionRepository
+    ) {
     }
 
     public function handler(TransactionFindDto $dto): array

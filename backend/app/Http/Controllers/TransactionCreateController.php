@@ -15,7 +15,6 @@ class TransactionCreateController extends _Controller
     private TransactionCreateUseCase $transactionCreateUsecase;
     public function __construct()
     {
-        $this->middleware('auth:api');
         $this->transactionCreateUsecase = new TransactionCreateUseCase(
             new AwsS3Provider(),
             new EloquentCreateTransactionRepository()
