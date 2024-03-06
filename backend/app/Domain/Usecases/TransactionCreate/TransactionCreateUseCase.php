@@ -8,15 +8,17 @@ use Illuminate\Support\Facades\Validator;
 use App\Domain\Entities\TransactionEntity;
 use App\Domain\Providers\IStorageProvider;
 use App\Domain\Usecases\TransactionCreate\TransactionCreateDto;
+use App\Domain\Usecases\UserUpdateBalance\UserUpdateBalanceDto;
+use App\Domain\Usecases\UserUpdateBalance\UserUpdateBalanceUseCase;
 use App\Domain\Repositories\ICreateTransactionRepository\ICreateTransactionDto;
 use App\Domain\Repositories\ICreateTransactionRepository\ICreateTransactionRepository;
-
 
 class TransactionCreateUseCase
 {
     public function __construct(
         private readonly IStorageProvider $storageProvider,
-        private readonly ICreateTransactionRepository $createTransactionRepository
+        private readonly ICreateTransactionRepository $createTransactionRepository,
+        private readonly UserUpdateBalanceUseCase $userUpdateBalanceUsecase
     ) {
     }
 
@@ -118,11 +120,22 @@ class TransactionCreateUseCase
         }
 
         // create a new transaction 
-        return $this->createTransactionRepository->handler(new ICreateTransactionDto(
+        $createdTransaction = $this->createTransactionRepository->handler(new ICreateTransactionDto(
             array_merge($payload, [
                 // if is a deposit, starts with "pending" else it is approved
                 "status" => $dto->getFactor() == 1 ? "pending" : "approved"
             ])
         ));
+
+        // decrese user balance if factor is a purchase
+        if ($createdTransaction->getFactor() == -1) {
+            $this->userUpdateBalanceUsecase->handler(new UserUpdateBalanceDto([
+                "user_id" => $createdTransaction->getUserId(),
+                "increment_balance" => $createdTransaction->getAmount() * $createdTransaction->getFactor()
+            ]));
+        }
+
+        // return created transaction
+        return $createdTransaction;
     }
 }
