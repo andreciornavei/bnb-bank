@@ -6,6 +6,7 @@ namespace App\Domain\Repositories\ICreateTransactionRepository;
 class ICreateTransactionDto
 {
     private string $user_id;
+    private string $user_username;
     private string $status;
     private string $document;
     private string $description;
@@ -24,6 +25,11 @@ class ICreateTransactionDto
     public function getUserId()
     {
         return $this->user_id;
+    }
+
+    public function getUserUsername()
+    {
+        return $this->user_username;
     }
 
     public function getFactor()

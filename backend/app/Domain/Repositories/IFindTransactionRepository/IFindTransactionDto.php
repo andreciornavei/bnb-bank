@@ -21,26 +21,26 @@ class IFindTransactionDto
 
     public function getLimit()
     {
-        return $this->limit;
+        return $this->limit ?? null;
     }
 
     public function getCursor()
     {
-        return $this->cursor;
+        return $this->cursor ?? null;
     }
 
     public function getFilterId()
     {
-        return $this->filter_id;
+        return $this->filter_id ?? null;
     }
 
     public function getFilterUserId()
     {
-        return $this->filter_user_id;
+        return $this->filter_user_id ?? null;
     }
 
     public function getFilterStatus()
     {
-        return $this->filter_status;
+        return $this->filter_status ?? null;
     }
 }

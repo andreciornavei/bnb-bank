@@ -11,6 +11,7 @@ use App\Http\Controllers\TransactionCreateController;
 use App\Http\Controllers\TransactionFindForUserController;
 use App\Http\Controllers\TransactionFindPendingController;
 use App\Http\Controllers\TransactionUploadCheckController;
+use App\Http\Controllers\TransactionUpdateStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::group(['middleware' => Authenticate::class], function () {
     Route::get('auth/me', [AuthUserDataController::class, 'handler']);
     Route::group(['middleware' => PolicyOnlyAdmin::class], function () {
         Route::get('transactions/pendings', [TransactionFindPendingController::class, 'handler']);
+        Route::put('transactions/{id}/{status}', [TransactionUpdateStatusController::class, 'handler']);
     });
     Route::group(['middleware' => PolicyOnlyCustomer::class], function () {
         Route::post('transactions', [TransactionCreateController::class, 'handler']);

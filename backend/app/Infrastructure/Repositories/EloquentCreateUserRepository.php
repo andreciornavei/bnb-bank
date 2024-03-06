@@ -15,8 +15,8 @@ class EloquentCreateUserRepository implements ICreateUserRepository
             'username' => $dto->getUsername(),
             'password' => $dto->getPassword(),
             'email' => $dto->getEmail(),
-            'role' => $dto->getRole() || "customer",
-            'balance' => $dto->getBalance() || 0
+            'role' => $dto->getRole() ?? "customer",
+            'balance' => $dto->getBalance() ?? 0
         ]);
 
         return new UserEntity($user->fresh()->toArray());

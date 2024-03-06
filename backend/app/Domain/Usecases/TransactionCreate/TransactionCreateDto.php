@@ -9,6 +9,7 @@ class TransactionCreateDto
     private int $amount;
     private string | null $document;
     private string $userId;
+    private string $userUsername;
     private float $userBalance;
 
     public function __construct(array $data)
@@ -48,5 +49,10 @@ class TransactionCreateDto
     public function getUserId()
     {
         return $this->userId;
+    }
+
+    public function getUserUsername()
+    {
+        return $this->userUsername;
     }
 }
