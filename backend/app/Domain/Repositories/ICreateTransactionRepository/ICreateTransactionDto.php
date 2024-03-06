@@ -8,7 +8,7 @@ class ICreateTransactionDto
     private string $user_id;
     private string $user_username;
     private string $status;
-    private string $document;
+    private string | null $document;
     private string $description;
     private int $factor;
     private float $amount;
@@ -24,36 +24,36 @@ class ICreateTransactionDto
 
     public function getUserId()
     {
-        return $this->user_id;
+        return $this->user_id ?? null;
     }
 
     public function getUserUsername()
     {
-        return $this->user_username;
+        return $this->user_username ?? null;
     }
 
     public function getFactor()
     {
-        return $this->factor;
+        return $this->factor ?? null;
     }
 
     public function getAmount()
     {
-        return $this->amount;
+        return $this->amount ?? null;
     }
 
     public function getDescription()
     {
-        return $this->description;
+        return $this->description ?? null;
     }
 
     public function getDocument()
     {
-        return $this->document;
+        return $this->document ?? null;
     }
 
     public function getStatus()
     {
-        return $this->status;
+        return $this->status ?? null;
     }
 }

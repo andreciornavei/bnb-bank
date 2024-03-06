@@ -11,12 +11,15 @@ use App\Domain\Repositories\IFindTransactionRepository\IFindTransactionRepositor
 use App\Domain\Usecases\TransactionUpdate\TransactionUpdateDto;
 use App\Domain\Repositories\IUpdateTransactionRepository\IUpdateTransactionDto;
 use App\Domain\Repositories\IUpdateTransactionRepository\IUpdateTransactionRepository;
+use App\Domain\Usecases\UserUpdateBalance\UserUpdateBalanceDto;
+use App\Domain\Usecases\UserUpdateBalance\UserUpdateBalanceUseCase;
 
 class TransactionUpdateUseCase
 {
     public function __construct(
         private readonly IUpdateTransactionRepository $updateTransactionRepository,
         private readonly IFindTransactionRepository $findTransactionRepository,
+        private readonly UserUpdateBalanceUseCase $userUpdateBalanceUsecase
     ) {
     }
 
@@ -71,9 +74,20 @@ class TransactionUpdateUseCase
             ]);
         }
 
-        // create a new transaction 
-        return $this->updateTransactionRepository->handler(new IUpdateTransactionDto(
+        // update transaction status
+        $updatedTransaction = $this->updateTransactionRepository->handler(new IUpdateTransactionDto(
             $payload
         ));
+
+        // call usecase to increment user balance if approved
+        if ($updatedTransaction->getStatus() === "approved") {
+            $this->userUpdateBalanceUsecase->handler(new UserUpdateBalanceDto([
+                "user_id" => $updatedTransaction->getUserId(),
+                "increment_balance" => $updatedTransaction->getAmount() * $updatedTransaction->getFactor()
+            ]));
+        }
+
+        // return updated transaction
+        return $updatedTransaction;
     }
 }

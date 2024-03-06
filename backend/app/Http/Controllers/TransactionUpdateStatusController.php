@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\_Controller;
 use App\Domain\Usecases\TransactionUpdate\TransactionUpdateDto;
 use App\Domain\Usecases\TransactionUpdate\TransactionUpdateUseCase;
+use App\Domain\Usecases\UserUpdateBalance\UserUpdateBalanceUseCase;
 use App\Infrastructure\Repositories\EloquentFindTransactionRepository;
 use App\Infrastructure\Repositories\EloquentUpdateTransactionRepository;
+use App\Infrastructure\Repositories\EloquentUpdateUserRepository;
 
 class TransactionUpdateStatusController extends _Controller
 {
@@ -19,7 +21,8 @@ class TransactionUpdateStatusController extends _Controller
     {
         $this->transactionUpdateUseCase = new TransactionUpdateUseCase(
             new EloquentUpdateTransactionRepository(),
-            new EloquentFindTransactionRepository()
+            new EloquentFindTransactionRepository(),
+            new UserUpdateBalanceUseCase(new EloquentUpdateUserRepository())
         );
     }
 

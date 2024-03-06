@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\_Controller;
-use App\Domain\Usecases\TransactionCreate\TransactionCreateDto;
-use App\Domain\Usecases\TransactionCreate\TransactionCreateUseCase;
 use App\Infrastructure\Providers\Storage\AwsS3Provider;
+use App\Domain\Usecases\TransactionCreate\TransactionCreateDto;
+use App\Infrastructure\Repositories\EloquentUpdateUserRepository;
+use App\Domain\Usecases\TransactionCreate\TransactionCreateUseCase;
+use App\Domain\Usecases\UserUpdateBalance\UserUpdateBalanceUseCase;
 use App\Infrastructure\Repositories\EloquentCreateTransactionRepository;
 
 class TransactionCreateController extends _Controller
@@ -17,7 +19,8 @@ class TransactionCreateController extends _Controller
     {
         $this->transactionCreateUsecase = new TransactionCreateUseCase(
             new AwsS3Provider(),
-            new EloquentCreateTransactionRepository()
+            new EloquentCreateTransactionRepository(),
+            new UserUpdateBalanceUseCase(new EloquentUpdateUserRepository())
         );
     }
 
