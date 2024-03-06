@@ -1,4 +1,4 @@
-import { Typography, TypographyProps, styled } from '@mui/material'
+import { styled } from '@mui/material'
 
 export const NavWrapper = styled('div')`
   display: flex;
@@ -8,12 +8,6 @@ export const NavWrapper = styled('div')`
   box-sizing: border-box;
   justify-content: center;
   background-color: ${({ theme }) => theme.palette.secondary.main};
-`
-
-export const NavTitle = styled((props: TypographyProps) => (
-  <Typography {...props} variant="body1" />
-))`
-  color: ${({ theme }) => theme.palette.secondary.contrastText};
 `
 
 export const NavButton = styled('div')`

@@ -44,12 +44,13 @@ export const ResumeButtonSizeMap: Record<
 }
 
 export type ResumeButtonProps = {
-  resumeLabel: string
-  resumeValue: string
-  actionLabel: string
+  resumeLabel?: string
+  resumeValue?: string
+  actionLabel?: string
   actionIcon?: Icon
   actionIconDirection?: ActionIconDirectionType
   color: SimplePaletteColorOptions
   onPress?: () => void
+  href?: string
   size: ResumeButtonSizeType
 }

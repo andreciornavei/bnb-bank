@@ -56,7 +56,7 @@ export const DashboardPageView = (): JSX.Element => {
               label="EXPENSES"
               icon={ArrowBendRightDown}
             />
-            <DrawerItem href="checks" label="CHECKS" icon={Signature} />
+            <DrawerItem href="deposits" label="CHECKS" icon={Signature} />
             <DrawerItem
               href="notifications"
               label="NOTIFICATIONS"
