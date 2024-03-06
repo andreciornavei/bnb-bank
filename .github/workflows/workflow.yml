@@ -45,13 +45,6 @@ jobs:
           composer install --prefer-dist --optimize-autoloader --no-dev
         if: success()
 
-      # Run database migrations and seeds
-      - name: Run database migrations and seeds
-        run: |
-          cd backend
-          php artisan migrate --seed
-        if: success()
-
       # This step deploys your application to AWS Lambda using the Serverless Framework.
       - name: Deploy to AWS Lambda
         run: |
