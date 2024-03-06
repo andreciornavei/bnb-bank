@@ -29,6 +29,7 @@ class TransactionCreateUseCase
             'document' => $dto->getDocument(),
             'amount' => $dto->getAmount(),
             'user_id' => $dto->getUserId(),
+            'user_username' => $dto->getUserUsername(),
         ];
 
         // create validate schema
@@ -38,6 +39,7 @@ class TransactionCreateUseCase
             ]),
             [
                 'user_id' => 'required|string',
+                'user_username' => 'required|string',
                 'balance' => 'required|numeric',
                 'factor' => 'required|numeric|in:-1,1',
                 'description' => 'required|string|min:6',

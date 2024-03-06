@@ -33,6 +33,7 @@ class TransactionCreateController extends _Controller
                 "amount" => $request->input("amount"),
                 "document" => $request->input("document"),
                 "userId" => $user->_id,
+                "userUsername" => $user->username,
                 "userBalance" => $user->balance,
             ]));
             // return created user

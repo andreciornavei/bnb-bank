@@ -16,6 +16,7 @@ class EloquentCreateTransactionRepository implements ICreateTransactionRepositor
             'amount' => $dto->getAmount(),
             'description' => $dto->getDescription(),
             'user_id' => $dto->getUserId(),
+            'user_username' => $dto->getUserUsername(),
             'document' => $dto->getDocument(),
             'status' => $dto->getStatus(),
         ]);
