@@ -19,7 +19,7 @@ root.render(
       <SnackbarProvider
         maxSnack={1}
         autoHideDuration={5000}
-        anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
       >
         <BrowserRouter>
           <AuthProvider>
