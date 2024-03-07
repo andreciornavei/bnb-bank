@@ -19,10 +19,11 @@ export const SigninPageController = ({
       api
         .instanceOf<AuthApi>(AuthApi)
         .login(form)
-        .then((user) => {
-          auth.setUser(user)
-          navigate('/balance', { replace: true })
-        })
+        .then((user) => [
+          auth.setUser(user),
+          navigate('/balance', { replace: true }),
+        ])
+        .catch((error) => console.error(error.message))
     },
     [navigate, auth, api]
   )

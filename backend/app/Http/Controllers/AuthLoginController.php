@@ -28,9 +28,8 @@ class AuthLoginController extends _Controller
             $response = new Response(json_encode(auth()->user()));
             return $response
                 ->withHeaders(['Cache-Control' => 'no-cache, private'])
-                ->withCookie(cookie("Authorization", $token, auth()->factory()->getTTL() * 60, null, null, false, true));
+                ->withCookie(cookie("Authorization", $token, 3600, null, null, false, true));
         } catch (Exception $error) {
-            echo $error;
             return response()->json(json_decode($error->getMessage()), 401);
         }
     }
