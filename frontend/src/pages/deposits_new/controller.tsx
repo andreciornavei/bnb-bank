@@ -56,18 +56,14 @@ export const DepositsNewPageController = ({
 
       // extract document name and mount FormData
       const document = new URL(url).pathname.replace(/\/$/, '').split('/').pop()
-      const formdata = new FormData()
-      formdata.append('file', form.file)
+      const formData = new FormData()
+      formData.append('file', form.file)
 
       // call presigned url with file to upload
+      const headers = { 'Content-Type': 'multipart/form-data' }
       axios
-        .put(url, formdata, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        })
-        .then((r) => [
-          console.log('uploaded successfully'),
-          handleCreateDeposit({ ...form, document }),
-        ])
+        .put(url, formData, { headers })
+        .then((r) => [handleCreateDeposit({ ...form, document })])
         .catch((e) => [
           setLoading(false),
           setError({
