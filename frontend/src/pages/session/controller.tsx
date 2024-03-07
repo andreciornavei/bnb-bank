@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useApi } from '@hooks/api'
 import { useAuth } from '@hooks/auth'
-import { useSnackbar } from 'notistack'
+import { useNavigate } from 'react-router-dom'
 import { SessionPageContext } from './context'
 import { AuthApi } from '@services/api/auth_api'
 import { UserEntity } from '@entities/UserEntity'
 import { SessionPageControllerProps } from './types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 export const SessionPageController = (
   props: SessionPageControllerProps
@@ -15,12 +14,15 @@ export const SessionPageController = (
   const api = useApi()
   const auth = useAuth()
   const navigate = useNavigate()
-  const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = useState<boolean>(true)
 
-  const handleRedirectUser = (user: UserEntity) => {
-    // update user context
+  const handleSuccess = (user: UserEntity) => {
     auth.setUser(user)
+    navigate('/balance', { replace: true })
+  }
+
+  const handleFailure = () => {
+    navigate('/', { replace: true })
   }
 
   const handleLoadSession = useCallback(() => {
@@ -31,11 +33,8 @@ export const SessionPageController = (
     api
       .instanceOf<AuthApi>(AuthApi)
       .session()
-      .then(handleRedirectUser)
-      .catch(() => [
-        enqueueSnackbar('Falha ao obter sessão do usuário'),
-        navigate('/', { replace: true }),
-      ])
+      .then(handleSuccess)
+      .catch(handleFailure)
       .finally(() => setLoading(false))
   }, [])
 

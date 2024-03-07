@@ -1,3 +1,5 @@
+import { LoginFormType } from '@type/login_form_type'
+
 export type SigninPageProps = {}
 
 export type SigninPageControllerProps = SigninPageProps & {
@@ -6,5 +8,5 @@ export type SigninPageControllerProps = SigninPageProps & {
 
 export type SigninPageContextProps = {
   handleSignup: () => void
-  handleSubmitForm: () => void
+  handleSubmitForm: (form: LoginFormType) => void
 }

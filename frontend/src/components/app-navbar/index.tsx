@@ -1,13 +1,13 @@
-import { AppNavbarProps, AppNavbarVariantMap } from './types'
-import { IconButton, Typography } from '@mui/material'
 import { List } from '@phosphor-icons/react'
 import { NavButton, NavWrapper } from './styles'
+import { IconButton, Typography } from '@mui/material'
 import { useContextSelector } from 'use-context-selector'
-import { DashboardPageContext } from '@pages/dashboard/context'
+import { PrivatePageContext } from '@pages/_private/context'
+import { AppNavbarProps, AppNavbarVariantMap } from './types'
 
 export const AppNavbar = ({ title, variant }: AppNavbarProps): JSX.Element => {
   const toggleDrawer = useContextSelector(
-    DashboardPageContext,
+    PrivatePageContext,
     (s) => s.toggleDrawer
   )
 
