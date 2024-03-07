@@ -1,5 +1,4 @@
 import './index.css'
-import React from 'react'
 import Router from './router'
 import { enableMapSet } from 'immer'
 import { DefaultTheme } from './theme'
@@ -14,23 +13,21 @@ enableMapSet()
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={DefaultTheme}>
-      <SnackbarProvider
-        maxSnack={1}
-        autoHideDuration={5000}
-        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-      >
-        <BrowserRouter>
-          <AuthProvider>
-            <ApiProvider apiBaseURL={process.env.REACT_APP_API_URL}>
-              <Router />
-            </ApiProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </SnackbarProvider>
-    </ThemeProvider>
-  </React.StrictMode>
+  <ThemeProvider theme={DefaultTheme}>
+    <SnackbarProvider
+      maxSnack={1}
+      autoHideDuration={5000}
+      anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+    >
+      <BrowserRouter>
+        <AuthProvider>
+          <ApiProvider apiBaseURL={process.env.REACT_APP_API_URL}>
+            <Router />
+          </ApiProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </SnackbarProvider>
+  </ThemeProvider>
 )
 
 // If you want to start measuring performance in your app, pass a function

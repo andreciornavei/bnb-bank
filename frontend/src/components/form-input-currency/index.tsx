@@ -43,6 +43,7 @@ export const FormInputCurrency = ({
               onFocus={handleFocus}
               onMouseUp={handleFocus}
               onBlur={onBlur}
+              disabled={props.disabled}
               error={Boolean(props.error)}
               helperText={props.error || props.helperText}
               FormHelperTextProps={{
@@ -65,7 +66,7 @@ export const FormInputCurrency = ({
                   outline: 'none',
                   paddingLeft: 28,
                   color: palette.primary.main,
-                  borderBottomWidth: 1,
+                  borderBottomWidth: props.disableUnderline ? 0 : 1,
                   borderBottomStyle: 'solid',
                   borderBottomColor: palette.secondary.main,
                 },

@@ -1,22 +1,19 @@
 import { List } from '@mui/material'
+import { useAuth } from '@hooks/auth'
 import { PrivatePageContext } from '../context'
 import { Drawer, DrawerBackground } from '../styles'
+import { ItemsRoleSelector } from './items-role-selector'
 import { useContextSelector } from 'use-context-selector'
 import { DrawerItem } from '../../../components/drawer-item'
 import { DrawerHeader } from '../../../components/drawer-header'
 
 import {
-  ArrowBendRightDown,
-  ArrowBendRightUp,
   Bell,
   Gear,
   IdentificationCard,
   Question,
-  Scales,
   SignOut,
-  Signature,
 } from '@phosphor-icons/react'
-import { useAuth } from '@hooks/auth'
 
 export const PrivateDrawer = (): JSX.Element => {
   const auth = useAuth()
@@ -42,17 +39,10 @@ export const PrivateDrawer = (): JSX.Element => {
       <DrawerBackground role="presentation" onClick={() => toggleDrawer(false)}>
         <DrawerHeader />
         <List>
-          <DrawerItem href="balance" label="BALANCE" icon={Scales} />
-          <DrawerItem href="incomes" label="INCOMES" icon={ArrowBendRightUp} />
-          <DrawerItem
-            href="expenses"
-            label="EXPENSES"
-            icon={ArrowBendRightDown}
-          />
-          <DrawerItem href="deposits" label="CHECKS" icon={Signature} />
+          <ItemsRoleSelector />
           <DrawerItem href="notifications" label="NOTIFICATIONS" icon={Bell} />
           <DrawerItem
-            href="profiles"
+            href="profile"
             label="PROFILE"
             icon={IdentificationCard}
           />

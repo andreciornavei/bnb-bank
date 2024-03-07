@@ -18,6 +18,7 @@ export type FormInputCurrencyProps = {
   name: string
   label: string | React.ReactNode
   error?: string
+  disabled?: boolean
   helperText?: string
   options?: Object
   size?: FormInputTextSizes
@@ -25,6 +26,7 @@ export type FormInputCurrencyProps = {
   control: Control<FieldValues, any>
   startAdorment?: React.ReactNode
   endAdorment?: React.ReactNode
+  disableUnderline?: boolean
 } & Pick<
   FormInputCurrencyControllerProps,
   'prefix' | 'suffix' | 'decimalSeparator' | 'thousandSeparator'

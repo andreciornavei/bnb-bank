@@ -4,11 +4,12 @@ namespace App\Domain\Repositories\IFindTransactionRepository;
 
 class IFindTransactionDto
 {
-    private string | null $limit;
-    private string | null $cursor;
-    private string | null $filter_id;
-    private string | null $filter_user_id;
+    private $limit;
+    private $cursor;
+    private $filter_id;
+    private $filter_user_id;
     private $filter_status;
+    private $filter_factor;
 
     public function __construct(array $data)
     {
@@ -42,5 +43,10 @@ class IFindTransactionDto
     public function getFilterStatus()
     {
         return $this->filter_status ?? null;
+    }
+
+    public function getFilterFactor()
+    {
+        return $this->filter_factor ?? null;
     }
 }

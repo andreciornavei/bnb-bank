@@ -4,7 +4,6 @@ import { useAuth } from '@hooks/auth'
 import { useNavigate } from 'react-router-dom'
 import { SessionPageContext } from './context'
 import { AuthApi } from '@services/api/auth_api'
-import { UserEntity } from '@entities/UserEntity'
 import { SessionPageControllerProps } from './types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -15,11 +14,6 @@ export const SessionPageController = (
   const auth = useAuth()
   const navigate = useNavigate()
   const [loading, setLoading] = useState<boolean>(true)
-
-  const handleSuccess = (user: UserEntity) => {
-    auth.setUser(user)
-    navigate('/balance', { replace: true })
-  }
 
   const handleFailure = () => {
     navigate('/', { replace: true })
@@ -33,7 +27,7 @@ export const SessionPageController = (
     api
       .instanceOf<AuthApi>(AuthApi)
       .session()
-      .then(handleSuccess)
+      .then((user) => auth.authenticated(user, true))
       .catch(handleFailure)
       .finally(() => setLoading(false))
   }, [])

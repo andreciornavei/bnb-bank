@@ -25,13 +25,15 @@ class TransactionFindForUserController extends _Controller
             // get authenticated user
             $user = auth()->user();
             $status = $request->query("status");
+            $factor = $request->query("factor");
             // execute registration usecase
             $transactions = $this->transactionFindUsecase->handler(new TransactionFindDto([
                 "filter_user_id" => $user->_id,
                 "filter_id" => $request->query("id"),
                 "limit" => $request->query("limit", 10),
                 "cursor" => $request->query("cursor"),
-                "filter_status" => !empty($status) ? explode(",", $status) : []
+                "filter_factor" => !empty($factor) ? intval($factor) : null,
+                "filter_status" => !empty($status) ? explode(",", $status) : [],
             ]));
             // return created user
             return response()->json($transactions);
