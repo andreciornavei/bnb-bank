@@ -1,6 +1,6 @@
 import { ButtonBase, styled } from '@mui/material'
 
-export const ResumeButtonWrapper = styled(ButtonBase)<{
+export const SummaryButtonWrapper = styled(ButtonBase)<{
   bg: string
 }>`
   width: 100%;

@@ -6,7 +6,7 @@ import { formatAmount } from '@utils/formatter'
 import { DepositsNewPageContext } from './context'
 import { AppNavbar } from '@components/app-navbar'
 import { Money, Star } from '@phosphor-icons/react'
-import { ResumeButton } from '@components/resume-button'
+import { SummaryButton } from '@components/summary-button'
 import { useContextSelector } from 'use-context-selector'
 import { Stack, Typography, useTheme } from '@mui/material'
 import { FormInputFile } from '@components/form-input-file'
@@ -29,10 +29,10 @@ export const DepositsNewPageView = (): JSX.Element => {
   return (
     <Stack direction="column" style={{ flex: 1 }}>
       <AppNavbar title="CHECK DEPOSIT" variant="secondary" />
-      <ResumeButton
+      <SummaryButton
         size="regular"
-        resumeLabel="CURRENT BALANCE"
-        resumeValue={formatAmount(user?.balance || 0)}
+        summaryLabel="CURRENT BALANCE"
+        summaryValue={formatAmount(user?.balance || 0)}
         color={palette.tertiary}
       />
       <Body onSubmit={handleSubmit(handleSubmitForm)}>

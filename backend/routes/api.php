@@ -14,6 +14,7 @@ use App\Http\Controllers\TransactionFindForUserController;
 use App\Http\Controllers\TransactionFindPendingController;
 use App\Http\Controllers\TransactionUploadCheckController;
 use App\Http\Controllers\TransactionUpdateStatusController;
+use App\Http\Controllers\UserBalanceSummaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,7 @@ Route::group(['middleware' => Authenticate::class], function () {
         Route::put('transactions/{id}/{status}', [TransactionUpdateStatusController::class, 'handler']);
     });
     Route::group(['middleware' => PolicyOnlyCustomer::class], function () {
+        Route::get("balance/summary", [UserBalanceSummaryController::class, 'handler']);
         Route::post('transactions', [TransactionCreateController::class, 'handler']);
         Route::get('transactions', [TransactionFindForUserController::class, 'handler']);
         Route::post('transactions/upload', [TransactionUploadCheckController::class, 'handler']);

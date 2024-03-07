@@ -3,13 +3,13 @@ import {
   ResumeButtonProps,
   ResumeButtonSizeMap,
 } from './types'
-import { ResumeButtonWrapper } from './styles'
+import { SummaryButtonWrapper } from './styles'
 import { Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
-export const ResumeButton = ({
-  resumeLabel,
-  resumeValue,
+export const SummaryButton = ({
+  summaryLabel,
+  summaryValue,
   actionLabel,
   onPress,
   href,
@@ -26,7 +26,7 @@ export const ResumeButton = ({
   }
 
   return (
-    <ResumeButtonWrapper
+    <SummaryButtonWrapper
       bg={color.main}
       onClick={handleClick}
       disableRipple={!href && !onPress}
@@ -37,21 +37,21 @@ export const ResumeButton = ({
         alignItems="flex-end"
         justifyContent="space-between"
       >
-        {resumeLabel && resumeValue && (
+        {summaryLabel && summaryValue && (
           <Stack direction="column" alignItems="flex-start">
             <Typography
               fontWeight="bold"
               color={color.contrastText}
-              variant={ResumeButtonSizeMap[size].resumeLabelSize}
+              variant={ResumeButtonSizeMap[size].summaryLabelSize}
             >
-              {resumeLabel}
+              {summaryLabel}
             </Typography>
             <Typography
               fontWeight="500"
               color={color.contrastText}
-              variant={ResumeButtonSizeMap[size].resumeValueSize}
+              variant={ResumeButtonSizeMap[size].summaryValueSize}
             >
-              {resumeValue}
+              {summaryValue}
             </Typography>
           </Stack>
         )}
@@ -85,6 +85,6 @@ export const ResumeButton = ({
           </Stack>
         )}
       </Stack>
-    </ResumeButtonWrapper>
+    </SummaryButtonWrapper>
   )
 }

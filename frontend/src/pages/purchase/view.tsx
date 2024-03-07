@@ -4,7 +4,7 @@ import { LoadingButton } from '@mui/lab'
 import { useForm } from 'react-hook-form'
 import { PurchasePageContext } from './context'
 import { AppNavbar } from '@components/app-navbar'
-import { ResumeButton } from '@components/resume-button'
+import { SummaryButton } from '@components/summary-button'
 import { useContextSelector } from 'use-context-selector'
 import { formatAmount, formatDate } from '@utils/formatter'
 import { Stack, Typography, useTheme } from '@mui/material'
@@ -32,10 +32,10 @@ export const PurchasePageView = (): JSX.Element => {
   return (
     <Stack direction="column" style={{ flex: 1 }}>
       <AppNavbar title="PURCHASE" variant="secondary" />
-      <ResumeButton
+      <SummaryButton
         size="regular"
-        resumeLabel="CURRENT BALANCE"
-        resumeValue={formatAmount(user?.balance || 0)}
+        summaryLabel="CURRENT BALANCE"
+        summaryValue={formatAmount(user?.balance || 0)}
         color={palette.tertiary}
       />
       <Body onSubmit={handleSubmit(handleSubmitForm)}>

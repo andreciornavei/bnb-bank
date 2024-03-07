@@ -5,7 +5,7 @@ import { AppNavbar } from '@components/app-navbar'
 import { CaretDown, Plus } from '@phosphor-icons/react'
 import { useContextSelector } from 'use-context-selector'
 import { formatAmount, formatDate } from '@utils/formatter'
-import { ResumeButton } from '../../components/resume-button'
+import { SummaryButton } from '../../components/summary-button'
 import { ItemTransaction } from '@components/item-transaction'
 import { TransactionEntity } from '@entities/TransactionEntity'
 import { Box, Stack, Typography, useTheme } from '@mui/material'
@@ -20,30 +20,30 @@ export const BalancePageView = (): JSX.Element => {
   return (
     <Stack direction="column" flex={1}>
       <AppNavbar title="BNB Bank" variant="primary" />
-      <ResumeButton
+      <SummaryButton
         size="regular"
-        resumeLabel="Current Balance"
-        resumeValue={formatAmount(user?.balance || 0)}
+        summaryLabel="Current Balance"
+        summaryValue={formatAmount(user?.balance || 0)}
         actionLabel={formatDate(new Date())}
         color={palette.secondary}
         actionIcon={CaretDown}
         actionIconDirection="horizontal"
       />
-      <ResumeButton
+      <SummaryButton
         size="small"
         href="/deposits/new"
-        resumeLabel="Incomes"
-        resumeValue="$ 7100,00"
+        summaryLabel="Incomes"
+        summaryValue="$ 7100,00"
         actionLabel="DEPOSIT A CHECK"
         color={palette.tertiary}
         actionIcon={Plus}
         actionIconDirection="vertical"
       />
-      <ResumeButton
+      <SummaryButton
         size="small"
         href="/purchase"
-        resumeLabel="Expensess"
-        resumeValue="$ 780,00"
+        summaryLabel="Expensess"
+        summaryValue="$ 780,00"
         actionLabel="PURCHASE"
         color={palette.muted}
         actionIcon={Plus}

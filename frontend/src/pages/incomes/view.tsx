@@ -5,7 +5,7 @@ import { FlatList } from '@components/flatlist'
 import { CaretDown } from '@phosphor-icons/react'
 import { AppNavbar } from '@components/app-navbar'
 import { FloatButton } from '@components/float-button'
-import { ResumeButton } from '@components/resume-button'
+import { SummaryButton } from '@components/summary-button'
 import { useContextSelector } from 'use-context-selector'
 import { TransactionEntity } from '@entities/TransactionEntity'
 import { ItemTransaction } from '@components/item-transaction'
@@ -19,7 +19,7 @@ export const IncomesPageView = (): JSX.Element => {
   return (
     <Stack direction="column" flex={1} position="relative">
       <AppNavbar title="INCOMES" variant="secondary" />
-      <ResumeButton
+      <SummaryButton
         size="regular"
         actionLabel={formatDate(new Date())}
         color={palette.tertiary}
