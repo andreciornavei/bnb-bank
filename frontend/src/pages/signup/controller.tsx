@@ -35,7 +35,7 @@ export const SignupPageController = ({
           navigate('/balance', { replace: true }),
         ])
         .catch((error) => [
-          setError(error.response.data),
+          setError(error?.response?.data),
           enqueueSnackbar({
             message:
               error.response?.data?.error?.message || 'Authentication Error',

@@ -32,7 +32,7 @@ class AwsS3Provider implements IStorageProvider
         $expiry = "+5 minutes";
         $cmd = $this->client->getCommand('PutObject', [
             'Bucket' => $this->bucket,
-            'Key' => "tmp/" . $document_key,
+            'Key' => "tmp" . "/" . $document_key,
             'ACL' => 'private',
         ], []);
         // execute command
