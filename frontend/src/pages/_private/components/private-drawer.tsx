@@ -3,7 +3,7 @@ import { PrivatePageContext } from '../context'
 import { Drawer, DrawerBackground } from '../styles'
 import { useContextSelector } from 'use-context-selector'
 import { DrawerItem } from '../../../components/drawer-item'
-import { DrawerHead } from '../../../components/drawer-header'
+import { DrawerHeader } from '../../../components/drawer-header'
 
 import {
   ArrowBendRightDown,
@@ -16,8 +16,10 @@ import {
   SignOut,
   Signature,
 } from '@phosphor-icons/react'
+import { useAuth } from '@hooks/auth'
 
 export const PrivateDrawer = (): JSX.Element => {
+  const auth = useAuth()
   const open = useContextSelector(PrivatePageContext, (s) => s.open)
   const toggleDrawer = useContextSelector(
     PrivatePageContext,
@@ -38,7 +40,7 @@ export const PrivateDrawer = (): JSX.Element => {
       }}
     >
       <DrawerBackground role="presentation" onClick={() => toggleDrawer(false)}>
-        <DrawerHead />
+        <DrawerHeader />
         <List>
           <DrawerItem href="balance" label="BALANCE" icon={Scales} />
           <DrawerItem href="incomes" label="INCOMES" icon={ArrowBendRightUp} />
@@ -56,7 +58,11 @@ export const PrivateDrawer = (): JSX.Element => {
           />
           <DrawerItem href="settings" label="SETTINGS" icon={Gear} />
           <DrawerItem href="help" label="HELP" icon={Question} />
-          <DrawerItem href="/" label="SIGN OUT" icon={SignOut} />
+          <DrawerItem
+            label="SIGN OUT"
+            icon={SignOut}
+            onClick={() => auth.disconnect()}
+          />
         </List>
       </DrawerBackground>
     </Drawer>

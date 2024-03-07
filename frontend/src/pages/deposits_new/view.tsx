@@ -1,27 +1,41 @@
 import { Body } from './styles'
+import { useAuth } from '@hooks/auth'
+import { LoadingButton } from '@mui/lab'
 import { useForm } from 'react-hook-form'
+import { formatAmount } from '@utils/formatter'
+import { DepositsNewPageContext } from './context'
 import { AppNavbar } from '@components/app-navbar'
 import { Money, Star } from '@phosphor-icons/react'
 import { ResumeButton } from '@components/resume-button'
+import { useContextSelector } from 'use-context-selector'
+import { Stack, Typography, useTheme } from '@mui/material'
+import { FormInputFile } from '@components/form-input-file'
 import { FormInputText } from '@components/form-input-text'
 import { FormInputLabel } from '@components/form-input-label'
-import { Button, Stack, Typography, useTheme } from '@mui/material'
 import { FormInputCurrency } from '@components/form-input-currency'
-import { FormInputFile } from '@components/form-input-file'
 
 export const DepositsNewPageView = (): JSX.Element => {
+  const { user } = useAuth()
   const { palette } = useTheme()
   const { handleSubmit, control } = useForm()
+
+  const error = useContextSelector(DepositsNewPageContext, (s) => s.error)
+  const loading = useContextSelector(DepositsNewPageContext, (s) => s.loading)
+  const handleSubmitForm = useContextSelector(
+    DepositsNewPageContext,
+    (s) => s.handleSubmitForm
+  )
+
   return (
     <Stack direction="column" style={{ flex: 1 }}>
       <AppNavbar title="CHECK DEPOSIT" variant="secondary" />
       <ResumeButton
         size="regular"
         resumeLabel="CURRENT BALANCE"
-        resumeValue="$ 6320.00"
+        resumeValue={formatAmount(user?.balance || 0)}
         color={palette.tertiary}
       />
-      <Body onSubmit={() => handleSubmit}>
+      <Body onSubmit={handleSubmit(handleSubmitForm)}>
         <Stack
           py={3}
           spacing={4}
@@ -34,6 +48,7 @@ export const DepositsNewPageView = (): JSX.Element => {
             name="amount"
             prefix="$ "
             control={control}
+            error={error?.error?.fields?.['amount']?.[0]}
             helperText="* The money will be deposited in your account once the check is accepted."
             endAdorment={
               <Typography variant="h5" color={palette.primary.main}>
@@ -47,14 +62,25 @@ export const DepositsNewPageView = (): JSX.Element => {
             name="description"
             placeholder="type here..."
             control={control}
+            error={error?.error?.fields?.['description']?.[0]}
           />
-          <FormInputFile name="document" control={control} />
+          <FormInputFile
+            name="file"
+            control={control}
+            error={error?.error?.fields?.['document']?.[0]}
+          />
         </Stack>
-        <Button variant="contained" size="large" fullWidth>
+        <LoadingButton
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={loading}
+        >
           <Typography variant="body2" fontWeight="bold" py={1}>
             DEPOSIT CHECK
           </Typography>
-        </Button>
+        </LoadingButton>
       </Body>
     </Stack>
   )

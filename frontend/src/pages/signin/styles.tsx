@@ -1,4 +1,5 @@
-import { Button, Divider, TextField, styled } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
+import { Divider, TextField, styled } from '@mui/material'
 
 export const Container = styled('div')`
   flex: 1;
@@ -37,7 +38,7 @@ export const FormInput = styled(TextField)`
   max-height: 55px;
 `
 
-export const FormButton = styled(Button)`
+export const FormButton = styled(LoadingButton)`
   min-height: 55px;
   max-height: 55px;
 `

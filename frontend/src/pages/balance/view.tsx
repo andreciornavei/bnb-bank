@@ -1,9 +1,12 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material'
+import { useAuth } from '@hooks/auth'
 import { AppNavbar } from '@components/app-navbar'
-import { ResumeButton } from '../../components/resume-button'
 import { CaretDown, Plus } from '@phosphor-icons/react'
+import { formatAmount, formatDate } from '@utils/formatter'
+import { ResumeButton } from '../../components/resume-button'
+import { Box, Stack, Typography, useTheme } from '@mui/material'
 
 export const BalancePageView = (): JSX.Element => {
+  const { user } = useAuth()
   const { palette } = useTheme()
   return (
     <Stack direction="column">
@@ -11,8 +14,8 @@ export const BalancePageView = (): JSX.Element => {
       <ResumeButton
         size="regular"
         resumeLabel="Current Balance"
-        resumeValue="$ 6320,00"
-        actionLabel="August, 2021"
+        resumeValue={formatAmount(user?.balance || 0)}
+        actionLabel={formatDate(new Date())}
         color={palette.secondary}
         actionIcon={CaretDown}
         actionIconDirection="horizontal"

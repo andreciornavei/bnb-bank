@@ -4,10 +4,10 @@ namespace App\Domain\Usecases\TransactionFind;
 
 class TransactionFindDto
 {
-    private string | null $limit;
-    private string | null $cursor;
-    private string | null $filter_id;
-    private string | null $filter_user_id;
+    private $limit;
+    private $cursor;
+    private $filter_id;
+    private $filter_user_id;
     private $filter_status;
 
     public function __construct(array $data)
@@ -21,26 +21,26 @@ class TransactionFindDto
 
     public function getLimit()
     {
-        return $this->limit;
+        return $this->limit ?? null;
     }
 
     public function getCursor()
     {
-        return $this->cursor;
+        return $this->cursor ?? null;
     }
 
     public function getFilterId()
     {
-        return $this->filter_id;
+        return $this->filter_id ?? null;
     }
 
     public function getFilterUserId()
     {
-        return $this->filter_user_id;
+        return $this->filter_user_id ?? null;
     }
 
     public function getFilterStatus()
     {
-        return $this->filter_status;
+        return $this->filter_status ?? null;
     }
 }

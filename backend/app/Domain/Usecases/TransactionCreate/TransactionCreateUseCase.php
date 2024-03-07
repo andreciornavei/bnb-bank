@@ -6,6 +6,7 @@ use App\Exceptions\JsonException;
 use Illuminate\Support\Facades\Validator;
 
 use App\Domain\Entities\TransactionEntity;
+use App\Domain\Entities\UserEntity;
 use App\Domain\Providers\IStorageProvider;
 use App\Domain\Usecases\TransactionCreate\TransactionCreateDto;
 use App\Domain\Usecases\UserUpdateBalance\UserUpdateBalanceDto;
@@ -22,7 +23,7 @@ class TransactionCreateUseCase
     ) {
     }
 
-    public function handler(TransactionCreateDto $dto): TransactionEntity
+    public function handler(TransactionCreateDto $dto): UserEntity | TransactionEntity
     {
         // mount payload
         $payload = [
@@ -44,7 +45,7 @@ class TransactionCreateUseCase
                 'user_username' => 'required|string',
                 'balance' => 'required|numeric',
                 'factor' => 'required|numeric|in:-1,1',
-                'description' => 'required|string|min:6',
+                'description' => 'required|string|min:2',
                 'document' => 'required_if:factor,1',
                 'amount' => [
                     'required',
@@ -129,7 +130,7 @@ class TransactionCreateUseCase
 
         // decrese user balance if factor is a purchase
         if ($createdTransaction->getFactor() == -1) {
-            $this->userUpdateBalanceUsecase->handler(new UserUpdateBalanceDto([
+            return $this->userUpdateBalanceUsecase->handler(new UserUpdateBalanceDto([
                 "user_id" => $createdTransaction->getUserId(),
                 "increment_balance" => $createdTransaction->getAmount() * $createdTransaction->getFactor()
             ]));

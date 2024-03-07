@@ -18,11 +18,11 @@ class AuthLoginDto
 
     public function getUsername()
     {
-        return $this->username;
+        return $this->username ?? null;
     }
 
     public function getPassword()
     {
-        return $this->password;
+        return $this->password ?? null;
     }
 }
