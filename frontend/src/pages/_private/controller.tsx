@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from 'react'
-import { DashboardPageContext } from './context'
-import { DashboardPageControllerProps } from './types'
+import { PrivatePageContext } from './context'
+import { PrivatePageControllerProps } from './types'
 import React from 'react'
 
-export const DashboardPageController = ({
+export const PrivatePageController = ({
   children,
-}: DashboardPageControllerProps): JSX.Element => {
+}: PrivatePageControllerProps): JSX.Element => {
   const [open, setOpen] = React.useState(false)
 
   const toggleDrawer = useCallback(
@@ -18,8 +18,8 @@ export const DashboardPageController = ({
   const state = useMemo(() => ({ open, toggleDrawer }), [open, toggleDrawer])
 
   return (
-    <DashboardPageContext.Provider value={state}>
+    <PrivatePageContext.Provider value={state}>
       {children}
-    </DashboardPageContext.Provider>
+    </PrivatePageContext.Provider>
   )
 }

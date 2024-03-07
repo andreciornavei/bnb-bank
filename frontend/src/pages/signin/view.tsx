@@ -9,16 +9,22 @@ import {
 } from './styles'
 import { useContextSelector } from 'use-context-selector'
 import { SigninPageContext } from './context'
+import { Controller, useForm } from 'react-hook-form'
+import { LoginFormType } from '@type/login_form_type'
 
 export const SigninPageView = (): JSX.Element => {
+  const { handleSubmit, control } = useForm<LoginFormType>()
+
   const handleSignup = useContextSelector(
     SigninPageContext,
     (s) => s.handleSignup
   )
+
   const handleSubmitForm = useContextSelector(
     SigninPageContext,
     (s) => s.handleSubmitForm
   )
+
   return (
     <Container>
       <Header>
@@ -26,10 +32,22 @@ export const SigninPageView = (): JSX.Element => {
           BNB Bank
         </Typography>
       </Header>
-      <Body onSubmit={handleSubmitForm}>
+      <Body onSubmit={handleSubmit(handleSubmitForm)}>
         <Stack direction="column" spacing={2} style={{ width: '100%' }}>
-          <FormInput type="text" label="username" />
-          <FormInput type="password" label="password" size="medium" />
+          <Controller
+            name="username"
+            control={control}
+            render={({ field }) => (
+              <FormInput type="text" label="username" {...field} />
+            )}
+          />
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <FormInput type="password" label="password" {...field} />
+            )}
+          />
           <FormButton
             type="submit"
             variant="contained"
