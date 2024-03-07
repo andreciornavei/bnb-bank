@@ -4,8 +4,8 @@ namespace App\Domain\Usecases\TransactionUpdate;
 
 class TransactionUpdateDto
 {
-    private string $id;
-    private string $status;
+    private $id;
+    private $status;
 
     public function __construct(array $data)
     {
@@ -18,11 +18,11 @@ class TransactionUpdateDto
 
     public function getId()
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     public function getStatus()
     {
-        return $this->status;
+        return $this->status ?? null;
     }
 }

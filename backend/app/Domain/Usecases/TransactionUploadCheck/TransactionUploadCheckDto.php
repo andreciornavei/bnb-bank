@@ -5,7 +5,7 @@ namespace App\Domain\Usecases\TransactionUploadCheck;
 class TransactionUploadCheckDto
 {
 
-    private string $user_id;
+    private $user_id;
 
     public function __construct(array $data)
     {
@@ -18,6 +18,6 @@ class TransactionUploadCheckDto
 
     public function getUserId()
     {
-        return $this->user_id;
+        return $this->user_id ?? null;
     }
 }

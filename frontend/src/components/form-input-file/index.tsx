@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { FormInputFileProps } from './types'
 import { FileContentSelector } from './components/file-content-selector'
+import { FormHelperText, Stack } from '@mui/material'
 
 export const FormInputFile = ({
   name,
+  error,
   control,
 }: FormInputFileProps): JSX.Element => {
   const [base64Image, setBase64Image] = useState<string | undefined>(undefined)
@@ -27,22 +29,25 @@ export const FormInputFile = ({
       <Controller
         name={name}
         control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <>
+        render={({ field: { onChange, value, ...field } }) => (
+          <Stack direction="column">
             <input
               accept="image/*"
               id="file-target"
               type="file"
-              value={field.value}
               style={{ display: 'none' }}
-              onChange={handleFileChange}
+              {...field}
+              onChange={(e) => [
+                onChange(e?.target?.files?.[0]),
+                handleFileChange(e),
+              ]}
             />
             <FileContentSelector
               base64Image={base64Image}
-              onRemove={() => setBase64Image(undefined)}
+              onRemove={() => [setBase64Image(undefined), onChange(undefined)]}
             />
-          </>
+            <FormHelperText error={!!error}>{error}</FormHelperText>
+          </Stack>
         )}
       />
     </>

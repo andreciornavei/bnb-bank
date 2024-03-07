@@ -4,13 +4,13 @@ namespace App\Domain\Usecases\TransactionCreate;
 
 class TransactionCreateDto
 {
-    private string $description;
-    private float $factor;
-    private int $amount;
-    private string | null $document;
-    private string $userId;
-    private string $userUsername;
-    private float $userBalance;
+    private $description;
+    private $factor;
+    private $amount;
+    private $document;
+    private $userId;
+    private $userUsername;
+    private $userBalance;
 
     public function __construct(array $data)
     {
@@ -23,36 +23,36 @@ class TransactionCreateDto
 
     public function getFactor()
     {
-        return $this->factor;
+        return $this->factor ?? null;
     }
 
     public function getAmount()
     {
-        return $this->amount;
+        return $this->amount ?? null;
     }
 
     public function getDocument()
     {
-        return $this->document;
+        return $this->document ?? null;
     }
 
     public function getDescription()
     {
-        return $this->description;
+        return $this->description ?? null;
     }
 
     public function getUserBalance()
     {
-        return $this->userBalance;
+        return $this->userBalance ?? null;
     }
 
     public function getUserId()
     {
-        return $this->userId;
+        return $this->userId ?? null;
     }
 
     public function getUserUsername()
     {
-        return $this->userUsername;
+        return $this->userUsername ?? null;
     }
 }

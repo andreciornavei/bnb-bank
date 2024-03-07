@@ -1,4 +1,9 @@
+import { SigninPageContext } from './context'
+import { LoginFormType } from '@type/login_form_type'
+import { Controller, useForm } from 'react-hook-form'
 import { Button, Stack, Typography } from '@mui/material'
+import { useContextSelector } from 'use-context-selector'
+
 import {
   Body,
   Container,
@@ -7,13 +12,12 @@ import {
   FormInput,
   Header,
 } from './styles'
-import { useContextSelector } from 'use-context-selector'
-import { SigninPageContext } from './context'
-import { Controller, useForm } from 'react-hook-form'
-import { LoginFormType } from '@type/login_form_type'
 
 export const SigninPageView = (): JSX.Element => {
   const { handleSubmit, control } = useForm<LoginFormType>()
+
+  const error = useContextSelector(SigninPageContext, (s) => s.error)
+  const loading = useContextSelector(SigninPageContext, (s) => s.loading)
 
   const handleSignup = useContextSelector(
     SigninPageContext,
@@ -38,14 +42,30 @@ export const SigninPageView = (): JSX.Element => {
             name="username"
             control={control}
             render={({ field }) => (
-              <FormInput type="text" label="username" {...field} />
+              <FormInput
+                type="text"
+                label="username"
+                disabled={loading}
+                error={!!error?.error?.fields?.['username']}
+                helperText={error?.error?.fields?.['username']?.[0]}
+                sx={{ pb: !!error?.error?.fields?.['username'] ? 2 : 0 }}
+                {...field}
+              />
             )}
           />
           <Controller
             name="password"
             control={control}
             render={({ field }) => (
-              <FormInput type="password" label="password" {...field} />
+              <FormInput
+                type="password"
+                label="password"
+                disabled={loading}
+                error={!!error?.error.fields?.['password']}
+                helperText={error?.error.fields?.['password']?.[0]}
+                sx={{ pb: !!error?.error.fields?.['password'] ? 2 : 0 }}
+                {...field}
+              />
             )}
           />
           <FormButton
@@ -53,6 +73,7 @@ export const SigninPageView = (): JSX.Element => {
             variant="contained"
             color="primary"
             size="large"
+            loading={loading}
           >
             SIGN IN
           </FormButton>

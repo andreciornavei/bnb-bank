@@ -20,16 +20,16 @@ class AuthRegisterDto
 
     public function getEmail()
     {
-        return $this->email;
+        return $this->email ?? null;
     }
 
     public function getUsername()
     {
-        return $this->username;
+        return $this->username ?? null;
     }
 
     public function getPassword()
     {
-        return $this->password;
+        return $this->password ?? null;
     }
 }

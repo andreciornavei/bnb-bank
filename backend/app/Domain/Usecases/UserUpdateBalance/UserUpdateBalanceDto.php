@@ -4,8 +4,8 @@ namespace App\Domain\Usecases\UserUpdateBalance;
 
 class UserUpdateBalanceDto
 {
-    private string $user_id;
-    private string $increment_balance;
+    private $user_id;
+    private $increment_balance;
 
     public function __construct(array $data)
     {
