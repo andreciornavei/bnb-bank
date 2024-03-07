@@ -18,7 +18,7 @@ export const FloatButton = ({
     <SpeedDial
       onClick={handleClick}
       ariaLabel="add new item"
-      sx={{ position: 'absolute', bottom: 24, right: 24, boxShadow: 'none' }}
+      sx={{ position: 'fixed', bottom: 24, right: 24, boxShadow: 'none' }}
       icon={<Plus size={24} weight="bold" />}
     />
   )

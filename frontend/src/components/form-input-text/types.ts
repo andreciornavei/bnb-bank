@@ -20,4 +20,5 @@ export type FormInputTextProps = {
   endAdorment?: React.ReactNode
   control: Control<FieldValues, any>
   inputStyle?: SxProps<Theme> | undefined
+  disableUnderline?: boolean
 }

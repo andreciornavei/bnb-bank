@@ -7,7 +7,7 @@ import { PurchasePageControllerProps } from './types'
 import { useCallback, useMemo, useState } from 'react'
 import { HttpMessageType } from '@type/http_error_type'
 import { FormPurchaseType } from '@type/form_purchase_type'
-import { TransactionsApi } from '@services/api/transactions_api'
+import { TransactionsCustomerApi } from '@services/api/transactions_customer_api'
 
 export const PurchasePageController = ({
   children,
@@ -24,7 +24,7 @@ export const PurchasePageController = ({
       setLoading(true)
       setError(undefined)
       api
-        .instanceOf<TransactionsApi>(TransactionsApi)
+        .instanceOf<TransactionsCustomerApi>(TransactionsCustomerApi)
         .purchase(form)
         .then((user) => [
           auth.setUser(user),

@@ -50,7 +50,7 @@ export function FormInputText({
             style: {
               paddingLeft: 28,
               color: palette.primary.main,
-              borderBottomWidth: 1,
+              borderBottomWidth: props.disableUnderline ? 0 : 1,
               borderBottomStyle: 'solid',
               borderBottomColor: palette.secondary.main,
             },

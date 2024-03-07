@@ -1,13 +1,13 @@
 import { useCallback, useMemo, useState } from 'react'
-import { SignupPageContext } from './context'
-import { SignupPageControllerProps } from './types'
-import { useNavigate } from 'react-router-dom'
-import { RegisterFormType } from '@type/register_form_type'
 import { useApi } from '@hooks/api'
 import { useAuth } from '@hooks/auth'
 import { useSnackbar } from 'notistack'
-import { HttpMessageType } from '@type/http_error_type'
+import { SignupPageContext } from './context'
+import { useNavigate } from 'react-router-dom'
 import { AuthApi } from '@services/api/auth_api'
+import { SignupPageControllerProps } from './types'
+import { HttpMessageType } from '@type/http_error_type'
+import { RegisterFormType } from '@type/register_form_type'
 
 export const SignupPageController = ({
   children,
@@ -30,10 +30,7 @@ export const SignupPageController = ({
       api
         .instanceOf<AuthApi>(AuthApi)
         .register(form)
-        .then((user) => [
-          auth.setUser(user),
-          navigate('/balance', { replace: true }),
-        ])
+        .then(auth.authenticated)
         .catch((error) => [
           setError(error?.response?.data),
           enqueueSnackbar({
@@ -43,7 +40,7 @@ export const SignupPageController = ({
         ])
         .finally(() => setLoading(false))
     },
-    [navigate, auth, api, enqueueSnackbar]
+    [auth, api, enqueueSnackbar]
   )
 
   const state = useMemo(

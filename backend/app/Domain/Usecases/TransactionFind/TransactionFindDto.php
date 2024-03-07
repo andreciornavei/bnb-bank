@@ -8,6 +8,7 @@ class TransactionFindDto
     private $cursor;
     private $filter_id;
     private $filter_user_id;
+    private $filter_factor;
     private $filter_status;
 
     public function __construct(array $data)
@@ -42,5 +43,10 @@ class TransactionFindDto
     public function getFilterStatus()
     {
         return $this->filter_status ?? null;
+    }
+
+    public function getFilterFactor()
+    {
+        return $this->filter_factor ?? null;
     }
 }

@@ -1,13 +1,13 @@
 import { useCallback, useMemo, useState } from 'react'
-import { SigninPageContext } from './context'
-import { SigninPageControllerProps } from './types'
-import { useNavigate } from 'react-router-dom'
 import { useApi } from '@hooks/api'
-import { AuthApi } from '@services/api/auth_api'
-import { LoginFormType } from '@type/login_form_type'
 import { useAuth } from '@hooks/auth'
-import { HttpMessageType } from '@type/http_error_type'
 import { useSnackbar } from 'notistack'
+import { SigninPageContext } from './context'
+import { useNavigate } from 'react-router-dom'
+import { AuthApi } from '@services/api/auth_api'
+import { SigninPageControllerProps } from './types'
+import { LoginFormType } from '@type/login_form_type'
+import { HttpMessageType } from '@type/http_error_type'
 
 export const SigninPageController = ({
   children,
@@ -26,10 +26,7 @@ export const SigninPageController = ({
       api
         .instanceOf<AuthApi>(AuthApi)
         .login(form)
-        .then((user) => [
-          auth.setUser(user),
-          navigate('/balance', { replace: true }),
-        ])
+        .then(auth.authenticated)
         .catch((error) => [
           setError(error?.response?.data),
           enqueueSnackbar({
@@ -39,7 +36,7 @@ export const SigninPageController = ({
         ])
         .finally(() => setLoading(false))
     },
-    [navigate, auth, api, enqueueSnackbar]
+    [auth, api, enqueueSnackbar]
   )
 
   const handleSignup = useCallback(() => navigate('/signup'), [navigate])

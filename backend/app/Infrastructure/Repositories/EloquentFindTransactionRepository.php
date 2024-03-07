@@ -25,6 +25,7 @@ class EloquentFindTransactionRepository implements IFindTransactionRepository
         if ($dto->getCursor()) $query->where('_id', '<', $dto->getCursor());
         if ($dto->getFilterId()) $query->where("_id", "=", $dto->getFilterId());
         if ($dto->getFilterUserId()) $query->where("user_id", "=", $dto->getFilterUserId());
+        if ($dto->getFilterFactor()) $query->where("factor", "=", $dto->getFilterFactor());
         if ($dto->getFilterStatus()) $query->whereIn("status", $dto->getFilterStatus());
 
         // return result

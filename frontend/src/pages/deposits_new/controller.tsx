@@ -7,7 +7,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { HttpMessageType } from '@type/http_error_type'
 import { DepositsNewPageControllerProps } from './types'
 import { FormDepositType } from '@type/form_deposit_type'
-import { TransactionsApi } from '@services/api/transactions_api'
+import { TransactionsCustomerApi } from '@services/api/transactions_customer_api'
 
 export const DepositsNewPageController = ({
   children,
@@ -23,7 +23,7 @@ export const DepositsNewPageController = ({
   const handleCreateDeposit = useCallback(
     (form: FormDepositType) => {
       api
-        .instanceOf<TransactionsApi>(TransactionsApi)
+        .instanceOf<TransactionsCustomerApi>(TransactionsCustomerApi)
         .deposit(form)
         .then(() => [navigate('/balance', { replace: true })])
         .catch((error) => [
@@ -82,7 +82,7 @@ export const DepositsNewPageController = ({
     (form: FormDepositType) => {
       if (uploadUrl) return handleUploadDocument(uploadUrl, form)
       api
-        .instanceOf<TransactionsApi>(TransactionsApi)
+        .instanceOf<TransactionsCustomerApi>(TransactionsCustomerApi)
         .presignUpload()
         .then((res) => [
           setUploadUrl(res.url),

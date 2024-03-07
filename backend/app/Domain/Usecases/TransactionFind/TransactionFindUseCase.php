@@ -25,6 +25,7 @@ class TransactionFindUseCase
             'filter_id' => $dto->getFilterId(),
             'filter_user_id' => $dto->getFilterUserId(),
             'filter_status' => $dto->getFilterStatus(),
+            'filter_factor' => $dto->getFilterFactor(),
         ];
 
         // create validate schema
@@ -32,11 +33,12 @@ class TransactionFindUseCase
             $payload,
             [
                 'limit' => 'required|numeric|min:1|max:20',
-                'cursor' => 'sometimes|nullable|string',
-                'filter_id' => 'sometimes|nullable|string',
-                'filter_user_id' => 'sometimes|nullable|string',
-                'filter_status' => 'sometimes|nullable|array',
+                'cursor' => 'nullable|string',
+                'filter_id' => 'nullable|string',
+                'filter_user_id' => 'nullable|string',
+                'filter_status' => 'nullable|array',
                 'filter_status.*' => 'string|in:pending,approved,rejected',
+                'filter_factor' => 'nullable|numeric|in:1,-1'
             ]
         );
 
