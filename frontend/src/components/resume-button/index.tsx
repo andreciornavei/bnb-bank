@@ -27,7 +27,7 @@ export const ResumeButton = ({
 
   return (
     <ResumeButtonWrapper
-      backgroundColor={color.main}
+      bg={color.main}
       onClick={handleClick}
       disableRipple={!href && !onPress}
     >

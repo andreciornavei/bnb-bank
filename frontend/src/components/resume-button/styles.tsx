@@ -1,10 +1,10 @@
 import { ButtonBase, styled } from '@mui/material'
 
 export const ResumeButtonWrapper = styled(ButtonBase)<{
-  backgroundColor: string
+  bg: string
 }>`
   width: 100%;
   padding: 24px;
   display: block;
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  background-color: ${({ bg }) => bg};
 `

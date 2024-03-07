@@ -1,8 +1,16 @@
 import _ from 'lodash'
 import produce from 'immer'
 import { FlatListContext } from './context'
+import { useScrollInfo } from '@hooks/useScrollInfo'
 import { FlatListControllerProps, FlatListRefType } from './types'
-import { useEffect, useImperativeHandle, useMemo, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 export const FlatListController = ({
   listingRef,
@@ -16,6 +24,8 @@ export const FlatListController = ({
 > & {
   listingRef: React.ForwardedRef<FlatListRefType>
 }): JSX.Element => {
+  const lockedLoading = useRef<boolean>(false)
+  const { isPageBottom } = useScrollInfo()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [records, setRecords] = useState<Array<unknown>>([])
   const [endReached, setEndReached] = useState<boolean>(false)
@@ -54,34 +64,48 @@ export const FlatListController = ({
 
   // determine a function to refresh search results
   const handleRefresh = (filters?: Record<string, string>) => {
+    setRecords([])
     setIsLoading(true)
     setFilters(filters)
     setEndReached(false)
+    lockedLoading.current = true
     handleFetch(limit, undefined, filters)
       .then((results) => [
         setEndReached(results.length < limit),
         setRecords(results),
       ])
       .catch((e) => console.error('failed to fetch data'))
-      .finally(() => setIsLoading(false))
+      .finally(() => [setIsLoading(false), (lockedLoading.current = false)])
   }
+
+  const handleLoadMore = useCallback(() => {
+    setIsLoading(true)
+    lockedLoading.current = true
+    handleFetch(limit, controlCursor, filters)
+      .then((results) => [
+        setEndReached(results.length < limit),
+        setRecords((rest) => [...rest, ...results]),
+      ])
+      .catch((e) => console.error('failed to fetch data'))
+      .finally(() => [setIsLoading(false), (lockedLoading.current = false)])
+  }, [controlCursor, filters, limit, handleFetch])
 
   // initialize first fetch if enabled
   useEffect(() => {
-    if (!endReached) {
-      setIsLoading(true)
-      handleFetch(limit, controlCursor, filters)
-        .then((results) => [
-          setEndReached(results.length < limit),
-          setRecords((rest) => [...rest, ...results]),
-        ])
-        .catch((e) => console.error('failed to fetch data'))
-        .finally(() => setIsLoading(false))
+    if (
+      !lockedLoading.current &&
+      !endReached &&
+      (isPageBottom || records.length === 0)
+    ) {
+      handleLoadMore()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [controlCursor])
+  }, [controlCursor, endReached, isPageBottom])
 
-  const state = useMemo(() => ({ records, isLoading }), [isLoading, records])
+  const state = useMemo(
+    () => ({ records, isLoading, endReached, handleLoadMore }),
+    [isLoading, records, endReached, handleLoadMore]
+  )
 
   return (
     <FlatListContext.Provider value={state}>
