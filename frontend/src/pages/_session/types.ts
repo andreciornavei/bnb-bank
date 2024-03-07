@@ -4,4 +4,6 @@ export type SessionPageControllerProps = SessionPageProps & {
 }
 export type SessionPageContextProps = {
   loading: boolean
+  leaving: boolean
+  handleLogout: () => void
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { FormInputFileProps } from './types'
 import { FileContentSelector } from './components/file-content-selector'
@@ -8,8 +8,11 @@ export const FormInputFile = ({
   name,
   error,
   control,
+  bgImage,
+  disabled,
 }: FormInputFileProps): JSX.Element => {
-  const [base64Image, setBase64Image] = useState<string | undefined>(undefined)
+  const ref = useRef<any>()
+  const [base64Image, setBase64Image] = useState<string | undefined>(bgImage)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
@@ -24,6 +27,10 @@ export const FormInputFile = ({
     }
   }
 
+  useEffect(() => {
+    if (!!bgImage) setBase64Image(bgImage)
+  }, [bgImage])
+
   return (
     <>
       <Controller
@@ -32,19 +39,27 @@ export const FormInputFile = ({
         render={({ field: { onChange, value, ...field } }) => (
           <Stack direction="column">
             <input
+              {...field}
               accept="image/*"
               id="file-target"
               type="file"
+              disabled={disabled}
+              value={value?.filename}
               style={{ display: 'none' }}
-              {...field}
+              ref={ref}
               onChange={(e) => [
                 onChange(e?.target?.files?.[0]),
                 handleFileChange(e),
               ]}
             />
             <FileContentSelector
+              disabled={disabled}
               base64Image={base64Image}
-              onRemove={() => [setBase64Image(undefined), onChange(undefined)]}
+              onRemove={() => [
+                onChange(undefined),
+                (ref.current.value = ''),
+                setBase64Image(undefined),
+              ]}
             />
             <FormHelperText error={!!error}>{error}</FormHelperText>
           </Stack>

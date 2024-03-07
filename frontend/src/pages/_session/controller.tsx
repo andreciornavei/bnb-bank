@@ -6,6 +6,7 @@ import { SessionPageContext } from './context'
 import { AuthApi } from '@services/api/auth_api'
 import { SessionPageControllerProps } from './types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useSnackbar } from 'notistack'
 
 export const SessionPageController = (
   props: SessionPageControllerProps
@@ -13,6 +14,8 @@ export const SessionPageController = (
   const api = useApi()
   const auth = useAuth()
   const navigate = useNavigate()
+  const { enqueueSnackbar } = useSnackbar()
+  const [leaving, setLeaving] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(true)
 
   const handleFailure = () => {
@@ -32,11 +35,24 @@ export const SessionPageController = (
       .finally(() => setLoading(false))
   }, [])
 
+  const handleLogout = useCallback(() => {
+    setLeaving(true)
+    api
+      .instanceOf<AuthApi>(AuthApi)
+      .logout()
+      .then(() => auth.disconnect())
+      .catch(() => enqueueSnackbar({ message: 'Failed to logout' }))
+      .finally(() => setLeaving(false))
+  }, [api, auth, enqueueSnackbar])
+
   useEffect(() => {
     handleLoadSession()
   }, [])
 
-  const state = useMemo(() => ({ loading }), [loading])
+  const state = useMemo(
+    () => ({ loading, leaving, handleLogout }),
+    [loading, leaving, handleLogout]
+  )
 
   return (
     <SessionPageContext.Provider value={state}>

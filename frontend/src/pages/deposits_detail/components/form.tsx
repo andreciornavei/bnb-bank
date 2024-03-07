@@ -27,6 +27,10 @@ export const DepositsDetailForm = ({ transaction }: Props): JSX.Element => {
   const { handleSubmit, control } = useForm<Partial<TransactionEntity>>({
     defaultValues: transaction || {},
   })
+  const presignedUrl = useContextSelector(
+    DepositsDetailPageContext,
+    (s) => s.presignedUrl
+  )
   const updating = useContextSelector(
     DepositsDetailPageContext,
     (s) => s.updating
@@ -86,7 +90,12 @@ export const DepositsDetailForm = ({ transaction }: Props): JSX.Element => {
             </Typography>
           }
         />
-        <FormInputFile name="file" control={control} />
+        <FormInputFile
+          name="file"
+          bgImage={presignedUrl?.url}
+          control={control}
+          disabled
+        />
       </Stack>
       <Stack direction="row" spacing={2} width="100%">
         <LoadingButton

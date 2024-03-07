@@ -9,6 +9,7 @@ import { Stack, Typography, useTheme } from '@mui/material'
 
 export const FileContentSelector = ({
   base64Image,
+  disabled,
   onRemove,
 }: FileContentSelectorProps): JSX.Element => {
   const { palette } = useTheme()
@@ -16,9 +17,11 @@ export const FileContentSelector = ({
   if (!!base64Image) {
     return (
       <FormInputFileWrapper backgroundImage={base64Image}>
-        <FormInputFileTrash onClick={onRemove}>
-          <Trash size={18} color={palette.common.white} weight="duotone" />
-        </FormInputFileTrash>
+        {!disabled && (
+          <FormInputFileTrash onClick={onRemove}>
+            <Trash size={18} color={palette.common.white} weight="duotone" />
+          </FormInputFileTrash>
+        )}
       </FormInputFileWrapper>
     )
   }
