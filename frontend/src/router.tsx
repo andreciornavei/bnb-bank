@@ -14,6 +14,7 @@ import { NotFoundedPage } from '@pages/notfounded'
 import { PublicPage } from '@pages/_public'
 import { PrivateRoleAdmin } from '@pages/_private/roles/admin'
 import { PrivateRoleCustomer } from '@pages/_private/roles/customer'
+import { IncomesPage } from '@pages/incomes'
 
 function Router() {
   return (
@@ -30,6 +31,7 @@ function Router() {
           </Route>
           <Route element={<PrivateRoleCustomer />}>
             <Route path="balance" element={<BalancePage />} />
+            <Route path="incomes" element={<IncomesPage />} />
             <Route path="expenses" element={<ExpensesPage />} />
             <Route path="purchase" element={<PurchasePage />} />
             <Route path="deposits" element={<DepositsPage />} />
