@@ -17,13 +17,13 @@ class AwsS3Provider implements IStorageProvider
     public function __construct()
     {
         $args = [
-            'region' => env('AWS_REGION', "sa-east-1"),
+            'region' => env('AWS_BUCKET_REGION', "sa-east-1"),
             'version' => 'latest',
         ];
-        if (getenv("AWS_ACCESS_KEY_ID") && getenv("AWS_SECRET_ACCESS_KEY")) {
+        if (getenv("AWS_BUCKET_KEY") && getenv("AWS_BUCKET_SECRET")) {
             $args["credentials"] = new Credentials(
-                env('AWS_ACCESS_KEY_ID'),
-                env('AWS_SECRET_ACCESS_KEY'),
+                env('AWS_BUCKET_KEY'),
+                env('AWS_BUCKET_SECRET'),
             );
         }
         $sdk = new Sdk($args);
