@@ -98,6 +98,12 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
         if: success()
 
+      # This step expose variables to environment
+      - name: Expose required environment variables (composed)
+        run: |
+          echo "S3_DOMAIN=${APP_NAME}.$([ "${BRANCH}" != "production" ] && echo "${BRANCH}.")${DOMAIN}" >> $GITHUB_ENV
+        if: success()
+
       # This step build reactjs application to be deployed.
       - name: Build ReactJS application
         run: |
@@ -128,7 +134,6 @@ jobs:
       - name: Release application on AWS S3 and invalidate CloudFront cache
         run: |
           cd frontend
-          echo "S3_DOMAIN=${APP_NAME}.$([ "${BRANCH}" != "production" ] && echo "${BRANCH}.")${DOMAIN}" >> $GITHUB_ENV
           echo "S3_DOMAIN=${S3_DOMAIN}"
           aws s3 sync build/ s3://${S3_DOMAIN}
           SLS_OUTPUT=$(cat sls-output.json)
