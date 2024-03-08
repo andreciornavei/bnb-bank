@@ -7,6 +7,7 @@ class TransactionEntity
 {
     private string $_id;
     private string $user_id;
+    private string $user_email;
     private string $user_username;
     private int $factor;
     private float $amount;
@@ -38,6 +39,11 @@ class TransactionEntity
     public function getUserId()
     {
         return $this->user_id;
+    }
+
+    public function getUserEmail()
+    {
+        return $this->user_email;
     }
 
     public function getUserUsername()

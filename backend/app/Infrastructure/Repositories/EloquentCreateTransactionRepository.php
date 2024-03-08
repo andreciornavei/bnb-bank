@@ -11,11 +11,13 @@ class EloquentCreateTransactionRepository implements ICreateTransactionRepositor
 {
     public function handler(ICreateTransactionDto $dto): TransactionEntity
     {
+
         $transaction = TransactionModel::create([
             'factor' => $dto->getFactor(),
             'amount' => $dto->getAmount(),
             'description' => $dto->getDescription(),
             'user_id' => $dto->getUserId(),
+            'user_email' => $dto->getUserEmail(),
             'user_username' => $dto->getUserUsername(),
             'document' => $dto->getDocument(),
             'status' => $dto->getStatus(),

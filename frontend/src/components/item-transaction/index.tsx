@@ -10,6 +10,7 @@ export const ItemTransaction = ({
   data,
   href,
   onClick,
+  labelField,
 }: ItemTransactionProps): JSX.Element => {
   const { palette } = useTheme()
   const navigate = useNavigate()
@@ -42,7 +43,7 @@ export const ItemTransaction = ({
                 : []
             }
           >
-            {data.description}
+            {data[labelField || 'description']}
           </Typography>
           <Typography
             variant="caption"

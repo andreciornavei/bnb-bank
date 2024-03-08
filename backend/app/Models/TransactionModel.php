@@ -21,6 +21,7 @@ class TransactionModel extends Model
         'amount',
         'description',
         'user_id',
+        'user_email',
         'user_username',
         'document',
         'status',

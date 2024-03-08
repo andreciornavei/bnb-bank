@@ -21,7 +21,11 @@ export const DepositsControlPageView = (): JSX.Element => {
           loadingMessage="Loading pending checks..."
           itemKey={(item: TransactionEntity) => item._id}
           renderItem={(item: TransactionEntity) => (
-            <ItemTransaction data={item} href={`/deposits/${item._id}`} />
+            <ItemTransaction
+              data={item}
+              href={`/deposits/${item._id}`}
+              labelField="user_username"
+            />
           )}
           handleFetch={handleFindTransactions}
         />

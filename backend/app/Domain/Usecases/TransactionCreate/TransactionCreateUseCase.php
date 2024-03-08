@@ -32,6 +32,7 @@ class TransactionCreateUseCase
             'document' => $dto->getDocument(),
             'amount' => $dto->getAmount(),
             'user_id' => $dto->getUserId(),
+            'user_email' => $dto->getUserEmail(),
             'user_username' => $dto->getUserUsername(),
         ];
 
@@ -42,6 +43,7 @@ class TransactionCreateUseCase
             ]),
             [
                 'user_id' => 'required|string',
+                'user_email' => 'required|string|email',
                 'user_username' => 'required|string',
                 'balance' => 'required|numeric',
                 'factor' => 'required|numeric|in:-1,1',
