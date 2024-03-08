@@ -135,5 +135,10 @@ jobs:
       # This step deploys your application to AWS Lambda using the Serverless Framework.
       - name: Release application on AWS S3 and invalidate CloudFront cache
         run: |
-          ls -R frontend/build/
+          S3_DOMAIN="${APP_NAME}.$([ "${BRANCH}" != "production" ] && echo "${BRANCH}.")${DOMAIN}"
+          echo "S3_DOMAIN=${S3_DOMAIN}"
+          aws s3 sync frontend/build/ s3://${S3_DOMAIN}
+          SLS_OUTPUT=$(cat sls-output.json)
+          $(echo "${SLS_OUTPUT}" | jq -r 'keys[] as $k | "export \($k)=\(.[$k])"')
+          aws cloudfront create-invalidation --distribution-id ${CDNDistributionId} --paths "/*"
         if: success()
