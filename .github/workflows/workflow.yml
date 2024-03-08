@@ -65,7 +65,7 @@ jobs:
       - name: Run Unit Tests
         run: |
           cd backend
-          php artisan test
+          yarn test
 
       # This step deploys your application to AWS Lambda using the Serverless Framework.
       - name: Deploy to AWS Lambda
