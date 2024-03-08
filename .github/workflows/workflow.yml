@@ -7,7 +7,61 @@ on:
       - production
 
 jobs:
-  deploy-api:
+  # deploy-api:
+  #   name: deploy-api
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # This step checks out a copy of your repository.
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Get branch names
+  #       id: branch-names
+  #       uses: tj-actions/branch-names@v8
+
+  #     # This step sets up Node.js environment.
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v3
+  #       if: success()
+
+  #     # This step installs the Serverless Framework globally.
+  #     - name: Install Serverless Framework
+  #       run: |
+  #         cd backend
+  #         npm install -g serverless serverless-prune-plugin serverless-iam-roles-per-function
+  #       if: success()
+
+  #     # This step sets up PHP environment with the specified version.
+  #     - name: Setup PHP
+  #       uses: shivammathur/setup-php@v2
+  #       with:
+  #         php-version: "8.2"
+  #       if: success()
+
+  #     # This step installs Composer dependencies with the specified options.
+  #     - name: Install Composer dependencies
+  #       run: |
+  #         cd backend
+  #         composer install --prefer-dist --optimize-autoloader --no-dev
+  #       if: success()
+
+  #     # This step deploys your application to AWS Lambda using the Serverless Framework.
+  #     - name: Deploy to AWS Lambda
+  #       run: |
+  #         cd backend
+  #         echo "APP_KEY=${{ vars.APP_KEY }}" >> .env
+  #         echo "APP_NAME=${{ vars.SUBDOMAIN }}" >> .env
+  #         echo "SUBDOMAIN=${{ vars.SUBDOMAIN }}" >> .env
+  #         echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
+  #         echo "DB_URI=${{ secrets.DB_URI }}" >> .env
+  #         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+  #         echo "AWS_HOSTED_ZONE_ID=${{ vars.AWS_HOSTED_ZONE_ID }}" >> .env
+  #         echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+  #         echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+  #         serverless deploy --config serverless.yml --stage ${{ steps.branch-names.outputs.current_branch }} --region ${{ vars.AWS_DEFAULT_REGION }} --verbose
+  #       if: success()
+
+  deploy-web:
     name: deploy-api
     runs-on: ubuntu-latest
     steps:
@@ -27,36 +81,62 @@ jobs:
       # This step installs the Serverless Framework globally.
       - name: Install Serverless Framework
         run: |
-          cd backend
-          npm install -g serverless serverless-prune-plugin serverless-iam-roles-per-function
+          cd frontend
+          npm install -g serverless serverless-dotenv-plugin serverless-export-outputs
         if: success()
 
-      # This step sets up PHP environment with the specified version.
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-        if: success()
-
-      # This step installs Composer dependencies with the specified options.
-      - name: Install Composer dependencies
+      # This step install aws cli to execute commands on aws.
+      - name: Install AWS Cli
         run: |
-          cd backend
-          composer install --prefer-dist --optimize-autoloader --no-dev
+          apt update && apt -y install zip curl jq
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          ./aws/install
+        if: success()
+
+      # This step expose variables to environment
+      - name: Build ReactJS Application
+        run: |
+          BRANCH=${{ steps.branch-names.outputs.current_branch }}
+          DOMAIN=${{ vars.DOMAIN }}
+          APP_NAME=${{ vars.APP_NAME }}
+          SUBDOMAIN=${{ vars.SUBDOMAIN }}
+          AWS_DEFAULT_REGION=${{ vars.AWS_DEFAULT_REGION }}
+          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        if: success()
+
+      # This step build reactjs application to be deployed.
+      - name: Build ReactJS Application
+        run: |
+          cd frontend
+          rm -rf .env
+          echo "REACT_APP_API_URL=https://$SUBDOMAIN-api.$([ "$BRANCH" != "production" ] && echo "$BRANCH.")$DOMAIN" >> .env
+          yarn --dev --production=false
+          yarn build
         if: success()
 
       # This step deploys your application to AWS Lambda using the Serverless Framework.
       - name: Deploy to AWS Lambda
         run: |
-          cd backend
-          echo "APP_KEY=${{ vars.APP_KEY }}" >> .env
-          echo "APP_NAME=${{ vars.SUBDOMAIN }}" >> .env
-          echo "SUBDOMAIN=${{ vars.SUBDOMAIN }}" >> .env
-          echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
-          echo "DB_URI=${{ secrets.DB_URI }}" >> .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-          echo "AWS_HOSTED_ZONE_ID=${{ vars.AWS_HOSTED_ZONE_ID }}" >> .env
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
-          serverless deploy --config serverless.yml --stage ${{ steps.branch-names.outputs.current_branch }} --region ${{ vars.AWS_DEFAULT_REGION }} --verbose
+          cd frontend
+          rm -rf .env
+          echo "DOMAIN=$DOMAIN" >> .env
+          echo "AWS_HOSTED_ZONE_ID=$AWS_HOSTED_ZONE_ID" >> .env
+          serverless deploy --config serverless-cert.yml --stage $BRANCH --region $AWS_DEFAULT_REGION --verbose
+          SLS_WEBCERT_OUTPUT=$(cat sls-webcert-output.json)
+          $(echo "$SLS_WEBCERT_OUTPUT" | jq -r 'keys[] as $k | "export \($k)=\(.[$k])"')
+          echo "AWS_ACM_ARN=${CertificateDomainArn}" >> .env
+          serverless deploy --config serverless.yml --stage $BRANCH --region $AWS_DEFAULT_REGION --verbose
+        if: success()
+
+      # This step deploys your application to AWS Lambda using the Serverless Framework.
+      - name: Release application aws s3 and invalidate cloud formation cache
+        run: |
+          cd frontend
+          S3_DOMAIN="$APP_NAME.$([ "$BRANCH" != "production" ] && echo "$BRANCH.")${{ vars.DOMAIN }}"
+          aws s3 sync build/ s3://$S3_DOMAIN
+          SLS_OUTPUT=$(cat sls-output.json)
+          $(echo "$SLS_OUTPUT" | jq -r 'keys[] as $k | "export \($k)=\(.[$k])"')
+          aws cloudfront create-invalidation --distribution-id $CDNDistributionId --paths "/*"
         if: success()
