@@ -82,8 +82,7 @@ jobs:
       - name: Install Serverless Framework
         run: |
           cd frontend
-          npm install
-          npm install -g serverless serverless-dotenv-plugin serverless-export-outputs
+          npm install -g serverless serverless-dotenv-plugin serverless-export-outputs fast-xml-parser
         if: success()
 
       # This step expose variables to environment
