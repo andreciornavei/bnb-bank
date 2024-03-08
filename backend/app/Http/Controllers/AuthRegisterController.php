@@ -8,6 +8,7 @@ use App\Http\Controllers\_Controller;
 use App\Domain\Usecases\AuthLogin\AuthLoginUseCase;
 use App\Domain\Usecases\AuthRegister\AuthRegisterDto;
 use App\Domain\Usecases\AuthRegister\AuthRegisterUseCase;
+use App\Infrastructure\Repositories\EloquentFindUserRepository;
 use App\Infrastructure\Repositories\EloquentCreateUserRepository;
 
 class AuthRegisterController extends _Controller
@@ -17,6 +18,7 @@ class AuthRegisterController extends _Controller
     {
         $this->authRegisterUsecase = new AuthRegisterUseCase(
             new EloquentCreateUserRepository(),
+            new EloquentFindUserRepository(),
             new AuthLoginUseCase()
         );
     }

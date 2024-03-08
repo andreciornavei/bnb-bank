@@ -9,6 +9,8 @@ use Illuminate\Http\Response;
 use App\Domain\Usecases\AuthLogin\AuthLoginDto;
 use App\Domain\Usecases\AuthLogin\AuthLoginUseCase;
 use App\Domain\Usecases\AuthRegister\AuthRegisterDto;
+use App\Domain\Repositories\IFindUserRepository\IFindUserDto;
+use App\Domain\Repositories\IFindUserRepository\IFindUserRepository;
 use App\Domain\Repositories\ICreateUserRepository\ICreateUserDto;
 use App\Domain\Repositories\ICreateUserRepository\ICreateUserRepository;
 
@@ -16,6 +18,7 @@ class AuthRegisterUseCase
 {
     public function __construct(
         private readonly ICreateUserRepository $createUserRepository,
+        private readonly IFindUserRepository $findUserRepository,
         private readonly AuthLoginUseCase $authLoginUsecase,
     ) {
     }
@@ -33,7 +36,7 @@ class AuthRegisterUseCase
         $validator = Validator::make($payload, [
             'email' => 'required|string|email|max:255',
             'password' => 'required|min:6',
-            'username' => 'required|string|min:6|max:32|unique:users',
+            'username' => 'required|string|min:6|max:32',
         ]);
 
         // validate provided data
@@ -42,6 +45,21 @@ class AuthRegisterUseCase
                 "error" => [
                     "message" => "Validation failed",
                     "fields" => $validator->errors()
+                ]
+            ]);
+        }
+
+        // check if user already exists
+        $user = $this->findUserRepository->handler(new IFindUserDto([
+            "filter_username" => $dto->getUsername()
+        ]));
+
+        // throw if user already exists
+        if(!!$user) {
+            throw new JsonException([
+                "error" => [
+                    "message" => "Validation failed",
+                    "fields" => ["username" => ["Username already in use"]]
                 ]
             ]);
         }
