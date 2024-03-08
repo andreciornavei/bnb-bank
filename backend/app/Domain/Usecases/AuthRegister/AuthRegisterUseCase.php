@@ -5,19 +5,22 @@ namespace App\Domain\Usecases\AuthRegister;
 use App\Exceptions\JsonException;
 use Illuminate\Support\Facades\Validator;
 
-use App\Domain\Entities\UserEntity;
-use App\Domain\Repositories\ICreateUserRepository\ICreateUserDto;
+use Illuminate\Http\Response;
+use App\Domain\Usecases\AuthLogin\AuthLoginDto;
+use App\Domain\Usecases\AuthLogin\AuthLoginUseCase;
 use App\Domain\Usecases\AuthRegister\AuthRegisterDto;
+use App\Domain\Repositories\ICreateUserRepository\ICreateUserDto;
 use App\Domain\Repositories\ICreateUserRepository\ICreateUserRepository;
-
 
 class AuthRegisterUseCase
 {
-    public function __construct(private readonly ICreateUserRepository $createUserRepository)
-    {
+    public function __construct(
+        private readonly ICreateUserRepository $createUserRepository,
+        private readonly AuthLoginUseCase $authLoginUsecase,
+    ) {
     }
 
-    public function handler(AuthRegisterDto $dto): UserEntity
+    public function handler(AuthRegisterDto $dto): Response
     {
         // mount payload
         $payload = [
@@ -43,12 +46,18 @@ class AuthRegisterUseCase
             ]);
         }
 
-        // create a new user and return it
-        return $this->createUserRepository->handler(new ICreateUserDto(
+        // create a new user on database
+        $this->createUserRepository->handler(new ICreateUserDto(
             array_merge($payload, [
                 "role" => "customer",
                 "balance" => 0
             ])
         ));
+
+        // return authenticated user to response
+        return $this->authLoginUsecase->handler(new AuthLoginDto([
+            "username" => $dto->getUsername(),
+            "password" => $dto->getPassword(),
+        ]));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Usecases\AuthLogin;
 
+use Illuminate\Http\Response;
 use App\Exceptions\JsonException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +14,7 @@ class AuthLoginUseCase
     {
     }
 
-    public function handler(AuthLoginDto $dto): string
+    public function handler(AuthLoginDto $dto): Response
     {
         // mount credentials
         $credentials = ["username" => $dto->getUsername(), "password" => $dto->getPassword()];
@@ -43,7 +44,10 @@ class AuthLoginUseCase
             ]);
         }
 
-        // return jwt token
-        return $token;
+        // return response with built-in token on cookie
+        $response = new Response(json_encode(auth()->user()));
+        return $response
+            ->withHeaders(['Cache-Control' => 'no-cache, private'])
+            ->withCookie(cookie("Authorization", $token, 60, null, null, false, true, false, null));
     }
 }
