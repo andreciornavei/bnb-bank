@@ -72,8 +72,8 @@ jobs:
           echo "DB_URI=${DB_URI}" >> .env
           echo "JWT_SECRET=${JWT_SECRET}" >> .env
           echo "AWS_HOSTED_ZONE_ID=${AWS_HOSTED_ZONE_ID}" >> .env
-          echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> .env
-          echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> .env
+          echo "AWS_BUCKET_KEY=${AWS_ACCESS_KEY_ID}" >> .env
+          echo "AWS_BUCKET_SECRET=${AWS_SECRET_ACCESS_KEY}" >> .env
           serverless deploy --config serverless.yml --stage ${BRANCH} --region ${AWS_DEFAULT_REGION} --verbose
         if: success()
 
