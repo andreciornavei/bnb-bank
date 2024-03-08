@@ -84,10 +84,3 @@ yarn test # to run unit tests on application
 yarn develop # to execute application in development mode
 yarn migrate # to run initial seed migrations
 ```
-
-
-## Considerations
-
-**Commits**: https://github.com/andreciornavei/bnb-bank/commits/develop/
-
-Take a look at the commits timeline and see the development process, attempts to run CI/CD pipeline, mistake fixings, etc.
