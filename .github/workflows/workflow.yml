@@ -52,7 +52,7 @@ jobs:
           echo "DOMAIN=${{ vars.DOMAIN }}" >> $GITHUB_ENV
           echo "DB_URI=${{ secrets.DB_URI }}" >> $GITHUB_ENV
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-          echo "APP_KEY=${{ vars.APP_KEY }}" >> $GITHUB_ENV
+          echo "APP_KEY=${{ secrets.APP_KEY }}" >> $GITHUB_ENV
           echo "APP_NAME=${{ vars.SUBDOMAIN }}-api" >> $GITHUB_ENV
           echo "SUBDOMAIN=${{ vars.SUBDOMAIN }}-api" >> $GITHUB_ENV
           echo "AWS_HOSTED_ZONE_ID=${{ vars.AWS_HOSTED_ZONE_ID }}" >> $GITHUB_ENV
