@@ -86,7 +86,7 @@ jobs:
         if: success()
 
       # This step expose variables to environment
-      - name: Build ReactJS Application
+      - name: Expose required environment variables
         run: |
           BRANCH=${{ steps.branch-names.outputs.current_branch }}
           DOMAIN=${{ vars.DOMAIN }}
@@ -98,7 +98,7 @@ jobs:
         if: success()
 
       # This step build reactjs application to be deployed.
-      - name: Build ReactJS Application
+      - name: Build ReactJS application
         run: |
           cd frontend
           rm -rf .env
