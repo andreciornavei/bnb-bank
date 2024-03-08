@@ -128,6 +128,8 @@ jobs:
       - name: Release application aws s3 and invalidate cloud formation cache
         run: |
           S3_DOMAIN="$APP_NAME.$([ "${BRANCH}" != "production" ] && echo "${BRANCH}.")${DOMAIN}"
+          echo "S3_DOMAIN=${S3_DOMAIN}"
+          ls -R frontend/build/
           aws s3 sync frontend/build/ s3://${S3_DOMAIN}
           SLS_OUTPUT=$(cat sls-output.json)
           $(echo "${SLS_OUTPUT}" | jq -r 'keys[] as $k | "export \($k)=\(.[$k])"')
