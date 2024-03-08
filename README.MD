@@ -36,23 +36,24 @@ MongoDB is being used for database.
 ### Backend requirements
 
 - ⬜ Automated Tests / Test Coverage
-
 - ✅ API Access Control (Policies, Gates, etc.)
-
+- - In addition to the Authenticate middleware, was created two new middlewares to handle user role policies, where them its attached to the correct routes for each role.
 - ✅ Implement a design pattern (DDD, Repository Pattern, etc.)
-
+- - With special attention on _`backend/app/Domain`_ and _`backend/app/Infrastructure`_. Them follow the SOLID principles and implements the Clean Architecture;
+- - Domain Usecases always expects an interface of an implementation. Thats implementations is Injected by Controllers.
+- - Infrastructure folder implements the data access for repositories and providers;
 - ✅ Make a good and cohesive database design
 ![](https://github.com/andreciornavei/bnb-bank/blob/develop/docs/BnB-Bank-MER.png?raw=true)
 
 ### Frontend requirements
 
 - ✅ TypeScript 
-
 - ✅ Front-end cache
-
+- - The frontend is cached using CloudFront. Always a deploy happens, the cloudfront cache is invalidated by CI.
 - ✅ Code structure and organization
-
+- - Give an special attention to page structure, each page contains a conjunction of (context, controller, view, types, styles & index) files, where each one has its own responsability, improving  readability; 
 - ⬜ Performance and monitoring tools
+- - Was made use of package _`use-context-selector`_ that improves the context providing. Also, for specific cases, was created an isolated component that inherit neededs data thought context, avoiding the re-render of entire screen.
 
 ## Stategic Decisions
 
