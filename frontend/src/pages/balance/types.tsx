@@ -1,3 +1,4 @@
+import { BalanceSumaryEntity } from '@entities/BalanceSummaryEntity'
 import { TransactionEntity } from '@entities/TransactionEntity'
 
 export type BalancePageProps = {}
@@ -7,6 +8,8 @@ export type BalancePageControllerProps = BalancePageProps & {
 }
 
 export type BalancePageContextProps = {
+  loadingSummary: boolean
+  summary: BalanceSumaryEntity | undefined
   handleFindTransactions: (
     limit: number,
     cursor: string | undefined,

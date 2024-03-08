@@ -6,7 +6,7 @@ import { CaretDown } from '@phosphor-icons/react'
 import { AppNavbar } from '@components/app-navbar'
 import { TabFilter } from '@components/tab-filter'
 import { FloatButton } from '@components/float-button'
-import { ResumeButton } from '@components/resume-button'
+import { SummaryButton } from '@components/summary-button'
 import { useContextSelector } from 'use-context-selector'
 import { ItemTransaction } from '@components/item-transaction'
 import { TransactionEntity } from '@entities/TransactionEntity'
@@ -25,7 +25,7 @@ export const DepositsPageView = (): JSX.Element => {
   return (
     <Stack direction="column" flex={1}>
       <AppNavbar title="CHECKS" variant="secondary" />
-      <ResumeButton
+      <SummaryButton
         size="regular"
         actionLabel={formatDate(new Date())}
         color={palette.tertiary}

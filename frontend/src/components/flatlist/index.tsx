@@ -22,6 +22,7 @@ export const FlatList = React.forwardRef<FlatListRefType, FlatListProps>(
           tableStyle={tableStyle}
           rowSpacing={rowSpacing}
           renderItem={renderItem}
+          itemKey={props.itemKey}
           renderHeader={renderHeader}
           emptyMessage={emptyMessage}
           loadingMessage={loadingMessage}

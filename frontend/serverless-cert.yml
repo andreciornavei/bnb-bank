@@ -1,0 +1,49 @@
+frameworkVersion: '^3.33.0'
+
+service: ${env:APP_NAME}-cert
+useDotenv: true
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-export-outputs
+
+provider:
+  name: aws
+  stage: ${opt:stage}
+  environment:
+    DOMAIN: ${env:DOMAIN}
+    AWS_HOSTED_ZONE_ID: ${env:AWS_HOSTED_ZONE_ID}
+
+params:
+  default:
+    DOMAIN: ${env:SUBDOMAIN}.${sls:stage}.${env:DOMAIN}
+  production:
+    DOMAIN: ${env:SUBDOMAIN}.${env:DOMAIN}
+
+custom:
+  exportOutputs:
+    include:
+      - CertificateDomainArn
+    output:
+      file: ./sls-webcert-output.json
+      format: json
+
+resources:
+  Resources:
+    CertificateDomainPrimary:
+      Type: AWS::CertificateManager::Certificate
+      Properties:
+        ValidationMethod: DNS
+        DomainName: ${param:DOMAIN}
+        DomainValidationOptions:
+          - DomainName: ${param:DOMAIN}
+            HostedZoneId: ${env:AWS_HOSTED_ZONE_ID}
+        Tags:
+          - Key: Name
+            Value: !Sub ${AWS::StackName}-cert-domain
+
+  Outputs:
+    CertificateDomainArn:
+      Description: ${env:APP_NAME} Web Certificate Arn
+      Value:
+        Ref: CertificateDomainPrimary

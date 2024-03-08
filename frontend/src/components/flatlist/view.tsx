@@ -1,8 +1,10 @@
 import { Stack } from '@mui/material'
 import { FlatListItems } from './components/items'
 import { FlatListProps } from './types'
+import { FlatListFooter } from './components/footer'
 
 export const FlatListView = ({
+  itemKey,
   renderItem,
   renderHeader,
   rowSpacing = 10,
@@ -12,6 +14,7 @@ export const FlatListView = ({
 }: Pick<
   FlatListProps,
   | 'rowSpacing'
+  | 'itemKey'
   | 'renderItem'
   | 'renderHeader'
   | 'emptyMessage'
@@ -24,11 +27,13 @@ export const FlatListView = ({
         <FlatListItems
           tableStyle={tableStyle}
           rowSpacing={rowSpacing}
+          itemKey={itemKey}
           renderItem={renderItem}
           renderHeader={renderHeader}
           emptyMessage={emptyMessage}
           loadingMessage={loadingMessage}
         />
+        <FlatListFooter />
       </Stack>
     </Stack>
   )

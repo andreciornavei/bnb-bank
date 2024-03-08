@@ -1,21 +1,21 @@
 import { SimplePaletteColorOptions } from '@mui/material'
 import { Variant } from '@mui/material/styles/createTypography'
 import { Icon } from '@phosphor-icons/react'
-export type ResumeButtonSizeType = 'regular' | 'small'
+export type SummaryButtonSizeType = 'regular' | 'small'
 export type ActionIconDirectionType = 'horizontal' | 'vertical'
-export type ResumeButtonSizeProps = {
-  resumeLabelSize: Variant
-  resumeValueSize: Variant
+export type SummaryButtonSizeProps = {
+  summaryLabelSize: Variant
+  summaryValueSize: Variant
   actionLabelSize: Variant
 }
-export type ResumeButtonIconDirectionProps = {
+export type SummaryButtonIconDirectionProps = {
   direction: 'row-reverse' | 'column'
   alignItems: 'center' | 'flex-end'
 }
 
 export const ResumeButtonIconDirectionMap: Record<
   ActionIconDirectionType,
-  ResumeButtonIconDirectionProps
+  SummaryButtonIconDirectionProps
 > = {
   horizontal: {
     direction: 'row-reverse',
@@ -28,29 +28,29 @@ export const ResumeButtonIconDirectionMap: Record<
 }
 
 export const ResumeButtonSizeMap: Record<
-  ResumeButtonSizeType,
-  ResumeButtonSizeProps
+  SummaryButtonSizeType,
+  SummaryButtonSizeProps
 > = {
   regular: {
     actionLabelSize: 'h6',
-    resumeLabelSize: 'body2',
-    resumeValueSize: 'h2',
+    summaryLabelSize: 'body2',
+    summaryValueSize: 'h2',
   },
   small: {
     actionLabelSize: 'caption',
-    resumeLabelSize: 'body2',
-    resumeValueSize: 'h3',
+    summaryLabelSize: 'body2',
+    summaryValueSize: 'h3',
   },
 }
 
 export type ResumeButtonProps = {
-  resumeLabel?: string
-  resumeValue?: string
+  summaryLabel?: string
+  summaryValue?: string
   actionLabel?: string
   actionIcon?: Icon
   actionIconDirection?: ActionIconDirectionType
   color: SimplePaletteColorOptions
   onPress?: () => void
   href?: string
-  size: ResumeButtonSizeType
+  size: SummaryButtonSizeType
 }

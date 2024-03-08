@@ -1,26 +1,32 @@
 import { List } from '@mui/material'
-import { useAuth } from '@hooks/auth'
 import { PrivatePageContext } from '../context'
 import { Drawer, DrawerBackground } from '../styles'
 import { ItemsRoleSelector } from './items-role-selector'
 import { useContextSelector } from 'use-context-selector'
+import { SessionPageContext } from '@pages/_session/context'
 import { DrawerItem } from '../../../components/drawer-item'
 import { DrawerHeader } from '../../../components/drawer-header'
 
 import {
   Bell,
   Gear,
-  IdentificationCard,
   Question,
   SignOut,
+  IdentificationCard,
 } from '@phosphor-icons/react'
 
 export const PrivateDrawer = (): JSX.Element => {
-  const auth = useAuth()
   const open = useContextSelector(PrivatePageContext, (s) => s.open)
+
   const toggleDrawer = useContextSelector(
     PrivatePageContext,
     (s) => s.toggleDrawer
+  )
+
+  const leaving = useContextSelector(SessionPageContext, (s) => s.leaving)
+  const handleLogout = useContextSelector(
+    SessionPageContext,
+    (s) => s.handleLogout
   )
 
   return (
@@ -49,9 +55,9 @@ export const PrivateDrawer = (): JSX.Element => {
           <DrawerItem href="settings" label="SETTINGS" icon={Gear} />
           <DrawerItem href="help" label="HELP" icon={Question} />
           <DrawerItem
-            label="SIGN OUT"
+            label={leaving ? 'LEAVING...' : 'SIGN OUT'}
             icon={SignOut}
-            onClick={() => auth.disconnect()}
+            onClick={handleLogout}
           />
         </List>
       </DrawerBackground>

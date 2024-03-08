@@ -1,7 +1,8 @@
-import { CircularProgress, Stack, Typography } from '@mui/material'
-import { LoadingPageProps } from './types'
+import { Stack } from '@mui/material'
+import { Loading } from '@components/loading'
+import { LoadingProps } from '@components/loading/types'
 
-export const LoadingPage = ({ message }: LoadingPageProps): JSX.Element => {
+export const LoadingPage = (props: LoadingProps): JSX.Element => {
   return (
     <Stack
       flex={1}
@@ -9,12 +10,7 @@ export const LoadingPage = ({ message }: LoadingPageProps): JSX.Element => {
       alignItems="center"
       justifyContent="center"
     >
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <CircularProgress size={16} thickness={5} />
-        <Typography variant="caption" fontWeight="bold">
-          {message || 'Loading...'}
-        </Typography>
-      </Stack>
+      <Loading {...props} />
     </Stack>
   )
 }

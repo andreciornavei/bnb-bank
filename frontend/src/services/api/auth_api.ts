@@ -20,6 +20,11 @@ export class AuthApi extends ApiAction {
     return response.data
   }
 
+  async logout(): Promise<unknown> {
+    const response = await this.http.post<unknown>(`/api/auth/logout`)
+    return response.data
+  }
+
   async session(): Promise<UserEntity> {
     const response = await this.http.get<UserEntity>(`/api/auth/me`)
     return response.data

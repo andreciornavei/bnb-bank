@@ -12,6 +12,7 @@ type Props = {
   displayRecords?: unknown[]
   rowSpacing?: number
   tableStyle?: React.CSSProperties | undefined
+  itemKey: (item: any) => string
   renderItem: (item: any, prevItem: any) => JSX.Element | JSX.Element[]
   renderHeader?: () => JSX.Element
 }
@@ -21,12 +22,13 @@ export const FlatListItems = ({
   rowSpacing = 10,
   tableStyle = {},
   renderItem,
+  itemKey,
   ...props
 }: Props): JSX.Element | null => {
   const isLoading = useContextSelector(FlatListContext, (s) => s.isLoading)
   const records = useContextSelector(FlatListContext, (s) => s.records)
 
-  if (!!isLoading) {
+  if (!!isLoading && records.length === 0) {
     return (
       <Stack flex={1}>
         <LoadingPage message={loadingMessage} />
@@ -54,7 +56,13 @@ export const FlatListItems = ({
         </thead>
       )}
       <tbody>
-        {records.map((record, index) => renderItem(record, records[index - 1]))}
+        {records.map((record, index) => (
+          <tr key={itemKey(record)} style={{ width: '100%' }}>
+            <td style={{ width: '100%' }}>
+              {renderItem(record, records[index - 1])}
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   )

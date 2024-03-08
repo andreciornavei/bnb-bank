@@ -1,7 +1,7 @@
+import React from 'react'
 import { useCallback, useMemo } from 'react'
 import { PrivatePageContext } from './context'
 import { PrivatePageControllerProps } from './types'
-import React from 'react'
 
 export const PrivatePageController = ({
   children,

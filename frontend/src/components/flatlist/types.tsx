@@ -17,6 +17,8 @@ export type FlatListProps = {
 export type FlatListContextProps = {
   records: unknown[]
   isLoading: boolean
+  endReached: boolean
+  handleLoadMore: () => void
 }
 
 export type FlatListControllerProps = FlatListProps & {
