@@ -88,13 +88,13 @@ jobs:
       # This step expose variables to environment
       - name: Expose required environment variables
         run: |
-          BRANCH=${{ steps.branch-names.outputs.current_branch }}
-          DOMAIN=${{ vars.DOMAIN }}
-          APP_NAME=${{ vars.SUBDOMAIN }}-web
-          SUBDOMAIN=${{ vars.SUBDOMAIN }}
-          AWS_DEFAULT_REGION=${{ vars.AWS_DEFAULT_REGION }}
-          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          BRANCH=${{ steps.branch-names.outputs.current_branch }} >> $GITHUB_ENV
+          DOMAIN=${{ vars.DOMAIN }} >> $GITHUB_ENV
+          APP_NAME=${{ vars.SUBDOMAIN }}-web >> $GITHUB_ENV
+          SUBDOMAIN=${{ vars.SUBDOMAIN }} >> $GITHUB_ENV
+          AWS_DEFAULT_REGION=${{ vars.AWS_DEFAULT_REGION }} >> $GITHUB_ENV
+          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> $GITHUB_ENV
+          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> $GITHUB_ENV
         if: success()
 
       # This step build reactjs application to be deployed.
