@@ -9,6 +9,7 @@ class TransactionCreateDto
     private $amount;
     private $document;
     private $userId;
+    private $userEmail;
     private $userUsername;
     private $userBalance;
 
@@ -49,6 +50,11 @@ class TransactionCreateDto
     public function getUserId()
     {
         return $this->userId ?? null;
+    }
+
+    public function getUserEmail()
+    {
+        return $this->userEmail ?? null;
     }
 
     public function getUserUsername()

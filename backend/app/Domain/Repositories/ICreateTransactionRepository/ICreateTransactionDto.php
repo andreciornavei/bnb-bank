@@ -5,13 +5,14 @@ namespace App\Domain\Repositories\ICreateTransactionRepository;
 
 class ICreateTransactionDto
 {
-    private string $user_id;
-    private string $user_username;
-    private string $status;
-    private string | null $document;
-    private string $description;
-    private int $factor;
-    private float $amount;
+    private $user_id;
+    private $user_email;
+    private $user_username;
+    private $status;
+    private $document;
+    private $description;
+    private $factor;
+    private $amount;
 
     public function __construct(array $data)
     {
@@ -25,6 +26,11 @@ class ICreateTransactionDto
     public function getUserId()
     {
         return $this->user_id ?? null;
+    }
+
+    public function getUserEmail()
+    {
+        return $this->user_email ?? null;
     }
 
     public function getUserUsername()

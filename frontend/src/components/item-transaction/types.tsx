@@ -5,4 +5,5 @@ export type ItemTransactionProps = {
   prevData?: TransactionEntity
   href?: string
   onClick?: (transaction: TransactionEntity) => void
+  labelField?: keyof TransactionEntity
 }

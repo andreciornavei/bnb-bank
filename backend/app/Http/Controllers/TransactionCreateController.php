@@ -36,6 +36,7 @@ class TransactionCreateController extends _Controller
                 "amount" => $request->input("amount"),
                 "document" => $request->input("document"),
                 "userId" => $user->_id,
+                "userEmail" => $user->email,
                 "userUsername" => $user->username,
                 "userBalance" => $user->balance,
             ]));
