@@ -18,10 +18,10 @@ provider:
 params:
   default:
     DOMAIN: ${env:SUBDOMAIN}.${sls:stage}.${env:DOMAIN}
-    BUCKET_NAME: ${env:SUBDOMAIN}-web.${sls:stage}.${env:DOMAIN}
+    BUCKET_NAME: ${env:APP_NAME}.${sls:stage}.${env:DOMAIN}
   production:
     DOMAIN: ${env:SUBDOMAIN}.${env:DOMAIN}
-    BUCKET_NAME: ${env:SUBDOMAIN}-web.${env:DOMAIN}
+    BUCKET_NAME: ${env:APP_NAME}.${env:DOMAIN}
 
 custom:
   exportOutputs:
