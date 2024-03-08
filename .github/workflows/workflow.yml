@@ -124,10 +124,16 @@ jobs:
           serverless deploy --config serverless.yml --stage ${BRANCH} --region ${AWS_DEFAULT_REGION} --verbose
         if: success()
 
+      # This step configures aws cli credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${AWS_ACCESS_KEY_ID}
+          aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY}
+          aws-region: ${AWS_DEFAULT_REGION}
+
       # This step deploys your application to AWS Lambda using the Serverless Framework.
       - name: Release application on AWS S3 and invalidate CloudFront cache
         run: |
-          S3_DOMAIN="${APP_NAME}.$([ "${BRANCH}" != "production" ] && echo "${BRANCH}.")${DOMAIN}"
-          echo "S3_DOMAIN=${S3_DOMAIN}"
           ls -R frontend/build/
         if: success()
