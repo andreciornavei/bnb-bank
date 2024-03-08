@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material'
 import { FlatListContext } from '../context'
-import { File } from '@phosphor-icons/react'
+import { File, Icon } from '@phosphor-icons/react'
 import { LoadingPage } from '@components/loading-page'
 import { MessagePage } from '@components/message-page'
 import { useContextSelector } from 'use-context-selector'
@@ -8,6 +8,8 @@ import { useContextSelector } from 'use-context-selector'
 type Props = {
   loading?: boolean
   loadingMessage?: string
+  emptyIcon?: Icon
+  emptyTitle?: string
   emptyMessage?: string
   displayRecords?: unknown[]
   rowSpacing?: number
@@ -17,7 +19,9 @@ type Props = {
   renderHeader?: () => JSX.Element
 }
 export const FlatListItems = ({
-  emptyMessage = 'Empty',
+  emptyIcon = File,
+  emptyTitle = 'Empty',
+  emptyMessage = 'No results to show',
   loadingMessage = 'Loading results...',
   rowSpacing = 10,
   tableStyle = {},
@@ -37,7 +41,9 @@ export const FlatListItems = ({
   }
 
   if (records.length === 0) {
-    return <MessagePage icon={File} title="Empty" message={emptyMessage} />
+    return (
+      <MessagePage icon={emptyIcon} title={emptyTitle} message={emptyMessage} />
+    )
   }
 
   return (
