@@ -30,11 +30,14 @@ export const FormInputCurrency = ({
             <TextField
               inputRef={ref}
               name={name}
-              fullWidth
-              type="phone"
               focused
-              inputMode="numeric"
+              fullWidth
               size={size}
+              type="phone"
+              inputMode="numeric"
+              autoCorrect="none"
+              autoComplete="none"
+              autoCapitalize="none"
               color="primary"
               label={props.label}
               value={value}

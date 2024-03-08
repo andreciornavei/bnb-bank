@@ -42,6 +42,9 @@ export const SignupPageView = (): JSX.Element => {
                 type="text"
                 label="username"
                 disabled={loading}
+                autoCorrect="none"
+                autoComplete="none"
+                autoCapitalize="none"
                 error={!!error?.error?.fields?.['username']}
                 helperText={error?.error?.fields?.['username']?.[0]}
                 sx={{ pb: !!error?.error?.fields?.['username'] ? 2 : 0 }}
@@ -57,6 +60,9 @@ export const SignupPageView = (): JSX.Element => {
                 type="email"
                 label="email"
                 disabled={loading}
+                autoCorrect="none"
+                autoComplete="none"
+                autoCapitalize="none"
                 error={!!error?.error?.fields?.['email']}
                 helperText={error?.error?.fields?.['email']?.[0]}
                 sx={{ pb: !!error?.error?.fields?.['email'] ? 2 : 0 }}
@@ -72,6 +78,9 @@ export const SignupPageView = (): JSX.Element => {
                 type="password"
                 label="password"
                 disabled={loading}
+                autoCorrect="none"
+                autoComplete="none"
+                autoCapitalize="none"
                 error={!!error?.error?.fields?.['password']}
                 helperText={error?.error?.fields?.['password']?.[0]}
                 sx={{ pb: !!error?.error?.fields?.['password'] ? 2 : 0 }}

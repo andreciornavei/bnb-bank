@@ -18,13 +18,16 @@ export function FormInputText({
           inputRef={ref}
           id={name}
           name={name}
+          focused
           fullWidth
           color="primary"
           variant="standard"
+          autoCorrect="none"
+          autoComplete="none"
+          autoCapitalize="none"
           label={props.label}
           value={value || ''}
           onBlur={onBlur}
-          focused
           onChange={(e) => onChange(e)}
           size={props.size || 'small'}
           type={props.type || 'text'}
