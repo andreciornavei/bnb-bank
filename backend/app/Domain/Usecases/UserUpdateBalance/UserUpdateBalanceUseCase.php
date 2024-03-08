@@ -17,6 +17,7 @@ class UserUpdateBalanceUseCase
 
     public function handler(UserUpdateBalanceDto $dto): UserEntity
     {
+
         // mount payload
         $payload = [
             'id' => $dto->getUserId(),

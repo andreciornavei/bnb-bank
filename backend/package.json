@@ -2,8 +2,10 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "test": "php artisan test",
         "develop": "docker compose up --build",
-        "migrate": "php artisan migrate:fresh --seed"
+        "migrate": "php artisan migrate --seed",
+        "migrate:fresh": "php artisan migrate:fresh --seed"
     },
     "devDependencies": {
         "axios": "^1.6.4",

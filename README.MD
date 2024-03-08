@@ -35,7 +35,7 @@ MongoDB is being used for database.
 
 ### Backend requirements
 
-- ⬜ Automated Tests / Test Coverage
+- ✅ Automated Tests / Test Coverage
 - ✅ API Access Control (Policies, Gates, etc.)
 - - In addition to the Authenticate middleware, was created two new middlewares to handle user role policies, where them its attached to the correct routes for each role.
 - ✅ Implement a design pattern (DDD, Repository Pattern, etc.)
@@ -57,15 +57,15 @@ MongoDB is being used for database.
 
 ## Stategic Decisions
 
-#### Docker + Bref (https://bref.sh/docs/deploy/docker)
+#### 1 - Docker + Bref (https://bref.sh/docs/deploy/docker)
 
 Small applications does not need to consume paid services on AWS, in this case, the API was packaged on a Docker Image and deployed inside a Lambda Function with help of Bref, so the API will always be available for anyone who try to dispach a request against it, and of corse, using the Always Free Tier limit.
 
-#### Uploads with AWS Presigned Url
+#### 2 - Uploads with AWS Presigned Url
 
 Backend applications should not have to handle hard proccess like uploads, it could use a lot of cpu, memory and time, for that, was used uploads with presigned urls, where the backend just ask to AWS for a URL where upload can be made.
 
-#### AWS S3 Bucket LifecycleConfiguration
+#### 3 - AWS S3 Bucket LifecycleConfiguration
 
 `./backend/serverless -> resources.Resources.UploadBucket`
 
