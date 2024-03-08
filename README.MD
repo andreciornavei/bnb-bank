@@ -2,7 +2,9 @@
 
 This is a test proposed by Turno to build a simplified Bank System using PHP/Laravel and ReactJS.
 
-Application: https://bnb-bank.andreciornavei.com.br
+**Original Test Repository** https://github.com/TidyDaily/developer-test/tree/main
+
+**Application**: https://bnb-bank.andreciornavei.com.br
 
 ![](https://github.com/andreciornavei/bnb-bank/blob/develop/docs/presentation.gif?raw=true)
 
@@ -13,6 +15,23 @@ Still, AWS infrastructure is being used to release the project and all its resou
 MongoDB is being used for database.
 
 ## Requirements met
+
+### Application stories requirements
+
+#### Customer
+- ✅ A user can create a new account with username and password
+- ✅ A user starts with 0 balance
+- ✅ A user can deposit more money to his account by uploading a picture of a check and entering the amount of the check. if the check is approved by an admin, the money is added to the bank account.
+- ✅ To buy something, the user enters the amount and description; a user can only buy something if she has enough money to cover the cost.
+- ✅ A user can see a list of balance changes including time and description.
+
+#### Admin
+- ✅ An admin account is already created with a hard coded username and password.
+- ✅ An admin can see a list of pending check deposit pictures with amount and picture and click to approve or deny the deposit.
+
+#### Simplifying Assumptions
+- ✅ An admin can’t be also a customer
+
 
 ### Backend requirements
 
