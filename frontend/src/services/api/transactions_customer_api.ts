@@ -5,6 +5,7 @@ import { FormDepositType } from '@type/form_deposit_type'
 import { TransactionEntity } from '@entities/TransactionEntity'
 import { PresignedUrlType } from '@type/presigned_url_type'
 import { FormFindTransactionsType } from '@type/form_find_transactions_type'
+import { FormPresignUploadType } from '@type/form_presign_upload_type'
 
 export class TransactionsCustomerApi extends ApiAction {
   async purchase(payload: FormPurchaseType): Promise<UserEntity> {
@@ -21,9 +22,9 @@ export class TransactionsCustomerApi extends ApiAction {
     )
     return response.data
   }
-  async presignUpload(): Promise<PresignedUrlType> {
-    const response = await this.http.post<PresignedUrlType>(
-      `/api/transactions/upload`
+  async presignUpload(props: FormPresignUploadType): Promise<PresignedUrlType> {
+    const response = await this.http.get<PresignedUrlType>(
+      `/api/transactions/upload?filename=${props.filename}`
     )
     return response.data
   }

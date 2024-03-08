@@ -8,13 +8,13 @@ use App\Http\Controllers\AuthLoginController;
 use App\Http\Controllers\AuthLogoutController;
 use App\Http\Controllers\AuthRegisterController;
 use App\Http\Controllers\AuthUserDataController;
-use App\Http\Controllers\TransactionCheckUrlController;
 use App\Http\Controllers\TransactionCreateController;
+use App\Http\Controllers\UserBalanceSummaryController;
+use App\Http\Controllers\TransactionCheckUrlController;
 use App\Http\Controllers\TransactionFindForUserController;
 use App\Http\Controllers\TransactionFindPendingController;
 use App\Http\Controllers\TransactionUploadCheckController;
 use App\Http\Controllers\TransactionUpdateStatusController;
-use App\Http\Controllers\UserBalanceSummaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +42,6 @@ Route::group(['middleware' => Authenticate::class], function () {
         Route::get("balance/summary", [UserBalanceSummaryController::class, 'handler']);
         Route::post('transactions', [TransactionCreateController::class, 'handler']);
         Route::get('transactions', [TransactionFindForUserController::class, 'handler']);
-        Route::post('transactions/upload', [TransactionUploadCheckController::class, 'handler']);
+        Route::get('transactions/upload', [TransactionUploadCheckController::class, 'handler']);
     });
 });
