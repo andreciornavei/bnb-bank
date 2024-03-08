@@ -3,6 +3,8 @@ import { TouchableItem } from './styles'
 import { ItemTransactionProps } from './types'
 import { Stack, Typography, useTheme } from '@mui/material'
 import { formatAmount, formatDate } from '@utils/formatter'
+import { TransactionStatusEnum } from '@enums/transaction_status_enum'
+import { ClockCountdown } from '@phosphor-icons/react'
 
 export const ItemTransaction = ({
   data,
@@ -34,21 +36,47 @@ export const ItemTransaction = ({
             color="primary"
             fontWeight="bold"
             lineHeight={1.2}
+            sx={
+              data.status === TransactionStatusEnum.rejected
+                ? [{ textDecoration: 'line-through', opacity: 0.5 }]
+                : []
+            }
           >
             {data.description}
           </Typography>
-          <Typography variant="caption" color="primary" lineHeight={1.2}>
+          <Typography
+            variant="caption"
+            color="primary"
+            lineHeight={1.2}
+            sx={
+              data.status === TransactionStatusEnum.rejected
+                ? [{ opacity: 0.5 }]
+                : []
+            }
+          >
             {formatDate(
               data.created_at as unknown as Date,
               'DD/MM/YYYY, HH:mm A'
             )}
           </Typography>
         </Stack>
-        <Stack direction="column">
+        <Stack direction="row" alignItems="center" spacing={1}>
+          {data.status === TransactionStatusEnum.pending && (
+            <ClockCountdown
+              size={16}
+              weight="duotone"
+              color={palette.primary.main}
+            />
+          )}
           <Typography
             variant="body2"
             fontWeight="bold"
             color={data.factor > 0 ? palette.primary.main : palette.error.main}
+            sx={
+              data.status === TransactionStatusEnum.rejected
+                ? [{ textDecoration: 'line-through', opacity: 0.5 }]
+                : []
+            }
           >
             {formatAmount(data.factor * data.amount)}
           </Typography>
