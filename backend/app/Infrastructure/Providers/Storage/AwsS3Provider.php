@@ -17,7 +17,7 @@ class AwsS3Provider implements IStorageProvider
     public function __construct()
     {
         $args = [
-            'region' => env('AWS_DEFAULT_REGION', "sa-east-1"),
+            'region' => env('AWS_REGION', "sa-east-1"),
             'version' => 'latest',
         ];
         if (getenv("AWS_ACCESS_KEY_ID") && getenv("AWS_SECRET_ACCESS_KEY")) {
