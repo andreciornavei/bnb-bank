@@ -61,6 +61,12 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
         if: success()
 
+      # This step execute unit tests on backend before deploy it.
+      - name: Run Unit Tests
+        run: |
+          cd backend
+          php artisan test
+
       # This step deploys your application to AWS Lambda using the Serverless Framework.
       - name: Deploy to AWS Lambda
         run: |

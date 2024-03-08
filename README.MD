@@ -72,6 +72,20 @@ Backend applications should not have to handle hard proccess like uploads, it co
 As users can abort deposit operations at any moment, it is important to remove temporary check uploads from bucket. For that, all temporary uploads are made on ./tmp folder on bucket, it contains a LifecycleConfiguration to remove the file in 24h. Once the deposit operation is finished successfully, the check file is moved from .tmp/ to ./deposits folder, where it will not be deleted anymore.
 
 
+## Localhost Commands
+
+### Backend
+
+For short commands on backend, it is using the `backend/package.json` to store scripts, where you can execute some usually commands.
+
+```bash
+cd backend
+yarn test # to run unit tests on application
+yarn develop # to execute application in development mode
+yarn migrate # to run initial seed migrations
+```
+
+
 ## Considerations
 
 **Commits**: https://github.com/andreciornavei/bnb-bank/commits/develop/
