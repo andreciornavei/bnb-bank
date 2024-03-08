@@ -1,7 +1,11 @@
+import { Icon } from '@phosphor-icons/react'
+
 export type FlatListProps = {
   limit?: number
   rowSpacing?: number
   tableStyle?: React.CSSProperties | undefined
+  emptyIcon?: Icon
+  emptyTitle?: string
   emptyMessage: string
   loadingMessage?: string
   itemKey: (item: any) => string

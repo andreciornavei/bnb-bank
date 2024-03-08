@@ -2,7 +2,7 @@ import { useAuth } from '@hooks/auth'
 import { BalancePageContext } from './context'
 import { FlatList } from '@components/flatlist'
 import { AppNavbar } from '@components/app-navbar'
-import { CaretDown } from '@phosphor-icons/react'
+import { CaretDown, PiggyBank } from '@phosphor-icons/react'
 import { useContextSelector } from 'use-context-selector'
 import { formatAmount, formatDate } from '@utils/formatter'
 import { SummaryButton } from '../../components/summary-button'
@@ -40,7 +40,9 @@ export const BalancePageView = (): JSX.Element => {
         <FlatList
           rowSpacing={0}
           loadingMessage="Loading transactions..."
-          emptyMessage="No expenses to show"
+          emptyIcon={PiggyBank}
+          emptyTitle="No transactions to show"
+          emptyMessage="Deposit a check to start using BNB Bank"
           itemKey={(item: TransactionEntity) => item._id}
           renderItem={(item: TransactionEntity) => (
             <ItemTransaction data={item} />

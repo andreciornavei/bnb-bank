@@ -9,6 +9,8 @@ export const FlatListView = ({
   renderHeader,
   rowSpacing = 10,
   tableStyle = {},
+  emptyIcon,
+  emptyTitle,
   emptyMessage,
   loadingMessage,
 }: Pick<
@@ -17,6 +19,8 @@ export const FlatListView = ({
   | 'itemKey'
   | 'renderItem'
   | 'renderHeader'
+  | 'emptyIcon'
+  | 'emptyTitle'
   | 'emptyMessage'
   | 'tableStyle'
   | 'loadingMessage'
@@ -30,6 +34,8 @@ export const FlatListView = ({
           itemKey={itemKey}
           renderItem={renderItem}
           renderHeader={renderHeader}
+          emptyIcon={emptyIcon}
+          emptyTitle={emptyTitle}
           emptyMessage={emptyMessage}
           loadingMessage={loadingMessage}
         />
