@@ -127,7 +127,7 @@ jobs:
       # This step deploys your application to AWS Lambda using the Serverless Framework.
       - name: Release application aws s3 and invalidate cloud formation cache
         run: |
-          S3_DOMAIN="$APP_NAME.$([ "${BRANCH}" != "production" ] && echo "${BRANCH}.")${DOMAIN}"
+          S3_DOMAIN="${APP_NAME}.$([ "${BRANCH}" != "production" ] && echo "${BRANCH}.")${DOMAIN}"
           echo "S3_DOMAIN=${S3_DOMAIN}"
           ls -R frontend/build/
           aws s3 sync frontend/build/ s3://${S3_DOMAIN}
