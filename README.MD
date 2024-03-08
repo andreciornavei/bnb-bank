@@ -52,7 +52,7 @@ MongoDB is being used for database.
 - - The frontend is cached using CloudFront. Always a deploy happens, the cloudfront cache is invalidated by CI.
 - ✅ Code structure and organization
 - - Give an special attention to page structure, each page contains a conjunction of (context, controller, view, types, styles & index) files, where each one has its own responsability, improving  readability; 
-- ⬜ Performance and monitoring tools
+- ✅ Performance and monitoring tools
 - - Was made use of package _`use-context-selector`_ that improves the context providing. Also, for specific cases, was created an isolated component that inherit neededs data thought context, avoiding the re-render of entire screen.
 
 ## Stategic Decisions
