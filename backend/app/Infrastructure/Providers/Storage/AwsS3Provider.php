@@ -3,10 +3,12 @@
 namespace App\Infrastructure\Providers\Storage;
 
 use Aws\Sdk;
+use Exception;
 use Aws\S3\S3Client;
+use Aws\S3\PostObjectV4;
 use Aws\Credentials\Credentials;
 use App\Domain\Providers\IStorageProvider;
-use Exception;
+use App\Domain\Entities\PresignedUrlFormEntity;
 
 class AwsS3Provider implements IStorageProvider
 {
@@ -26,19 +28,30 @@ class AwsS3Provider implements IStorageProvider
         $this->client = $sdk->createS3();
     }
 
-    public function generateSignedUrl(string $document_key): string
+    public function generateSignedUrl(string $document_key): PresignedUrlFormEntity
     {
-        // mount command
-        $expiry = "+5 minutes";
-        $cmd = $this->client->getCommand('PutObject', [
-            'Bucket' => $this->bucket,
-            'Key' => "tmp" . "/" . $document_key,
-            'ACL' => 'private',
-        ], []);
-        // execute command
-        $request = $this->client->createPresignedRequest($cmd, $expiry);
-        // return url result
-        return $request->getUri();
+        // Generate the form
+        $postObject = new PostObjectV4(
+            $this->client,
+            $this->bucket,
+            [
+                'acl' => 'private',
+                "bucket" => $this->bucket,
+                'key' => "tmp" . "/" . $document_key,
+            ],
+            [
+                ['acl' => 'private'],
+                ["bucket" => $this->bucket],
+                ['key' => "tmp" . "/" . $document_key],
+            ],
+            '+5 minutes'
+        );
+
+        // return build form entity
+        return new PresignedUrlFormEntity([
+            "url" => $postObject->getFormAttributes()['action'],
+            "fields" => $postObject->getFormInputs()
+        ]);
     }
 
     public function checkTmpDocument(string $document_key): string | null

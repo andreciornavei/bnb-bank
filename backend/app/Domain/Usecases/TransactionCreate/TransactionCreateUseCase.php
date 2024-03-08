@@ -82,7 +82,7 @@ class TransactionCreateUseCase
                     "error" => [
                         "message" => "Failed to access document",
                         "fields" => [
-                            "document" => "The provided document does not belongs to your user."
+                            "document" => ["The provided document does not belongs to your user."]
                         ]
                     ]
                 ]);
@@ -97,7 +97,7 @@ class TransactionCreateUseCase
                     "error" => [
                         "message" => "Failed to find document",
                         "fields" => [
-                            "document" => "The provided document was not founded."
+                            "document" => ["The provided document was not founded."]
                         ]
                     ]
                 ]);

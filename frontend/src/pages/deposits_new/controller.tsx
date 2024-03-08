@@ -7,6 +7,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { HttpMessageType } from '@type/http_error_type'
 import { DepositsNewPageControllerProps } from './types'
 import { FormDepositType } from '@type/form_deposit_type'
+import { PresignedUrlType } from '@type/presigned_url_type'
 import { TransactionsCustomerApi } from '@services/api/transactions_customer_api'
 
 export const DepositsNewPageController = ({
@@ -16,7 +17,9 @@ export const DepositsNewPageController = ({
   const navigate = useNavigate()
   const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = useState<boolean>(false)
-  const [uploadUrl, setUploadUrl] = useState<string | undefined>(undefined)
+  const [presigned, setPresigned] = useState<PresignedUrlType | undefined>(
+    undefined
+  )
   const [error, setError] = useState<HttpMessageType | undefined>(undefined)
 
   // 3ªChain - Create transaction with uploaded document
@@ -40,7 +43,7 @@ export const DepositsNewPageController = ({
 
   // 2ªChain - Upload document to signed URL
   const handleUploadDocument = useCallback(
-    (url: string, form: FormDepositType) => {
+    (presign: PresignedUrlType, form: FormDepositType) => {
       // return if file not selected
       if (!form.file) {
         return [
@@ -55,14 +58,17 @@ export const DepositsNewPageController = ({
       }
 
       // extract document name and mount FormData
-      const document = new URL(url).pathname.replace(/\/$/, '').split('/').pop()
+      const document = presign.fields?.key?.split('/')?.pop()
       const formData = new FormData()
+      for (const fieldKey in presign?.fields || []) {
+        formData.append(fieldKey, presign?.fields?.[fieldKey] || '')
+      }
       formData.append('file', form.file)
 
       // call presigned url with file to upload
       const headers = { 'Content-Type': 'multipart/form-data' }
       axios
-        .put(url, formData, { headers })
+        .post(presign.url, formData, { headers })
         .then((r) => [handleCreateDeposit({ ...form, document })])
         .catch((e) => [
           setLoading(false),
@@ -80,14 +86,11 @@ export const DepositsNewPageController = ({
   // 1ªChain - Generage presigned URL
   const handleLoadPresignedUrl = useCallback(
     (form: FormDepositType) => {
-      if (uploadUrl) return handleUploadDocument(uploadUrl, form)
+      if (presigned) return handleUploadDocument(presigned, form)
       api
         .instanceOf<TransactionsCustomerApi>(TransactionsCustomerApi)
-        .presignUpload()
-        .then((res) => [
-          setUploadUrl(res.url),
-          handleUploadDocument(res.url, form),
-        ])
+        .presignUpload({ filename: form.file?.name })
+        .then((res) => [setPresigned(res), handleUploadDocument(res, form)])
         .catch((error) => [
           setLoading(false),
           setError(error.response.data),
@@ -96,9 +99,9 @@ export const DepositsNewPageController = ({
     },
     [
       api,
-      uploadUrl,
+      presigned,
       setError,
-      setUploadUrl,
+      setPresigned,
       enqueueSnackbar,
       handleUploadDocument,
     ]

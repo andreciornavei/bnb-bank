@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\_Controller;
 use App\Infrastructure\Providers\Storage\AwsS3Provider;
 use App\Domain\Usecases\TransactionUploadCheck\TransactionUploadCheckDto;
@@ -18,12 +19,14 @@ class TransactionUploadCheckController extends _Controller
         );
     }
 
-    public function handler()
+    public function handler(Request $request)
     {
         $user = auth()->user();
+        $filename = $request->query(("filename"));
         $signedUrl = $this->transactionUploadCheckUsecase->handler(new TransactionUploadCheckDto([
-            "user_id" => $user->_id
+            "user_id" => $user->_id,
+            "filename" => $filename
         ]));
-        return response()->json(["url" => $signedUrl]);
+        return response()->json($signedUrl->toJson());
     }
 }
