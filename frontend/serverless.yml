@@ -1,6 +1,6 @@
 frameworkVersion: '^3.33.0'
 
-service: ${env:APP_NAME}-web
+service: ${env:APP_NAME}
 useDotenv: true
 
 plugins:
