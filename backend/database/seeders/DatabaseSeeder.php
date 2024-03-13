@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use \App\Models\User;
+use \App\Models\UserModel;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = new User();
+        $admin = new UserModel();
         $admin->create([
             'username' => 'admin',
             'email' => 'admin@bnb-bank.com',
